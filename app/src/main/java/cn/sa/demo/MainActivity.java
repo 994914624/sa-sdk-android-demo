@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
                     properties.put("IsAddedToFav", false);                  // 是否被添加到收藏夹
                     // 埋点触发 "ViewProduct" 事件
                     SensorsDataAPI.sharedInstance().track("ViewProduct", properties);
-                    //SensorsDataAPI.sharedInstance().setServerUrl("http://sdk-test.cloud.sensorsdata.cn:8006/sa?project=yangzhankun&token=95c73ae661f85aa0");
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

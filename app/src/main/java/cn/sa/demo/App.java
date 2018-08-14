@@ -20,10 +20,10 @@ public class App extends Application {
      */
 
     // debug 模式的数据接收地址 （测试，测试项目）
-    final static String SA_SERVER_URL_DEBUG = "http://sdk-test.cloud.sensorsdata.cn:8006/sa?project=yangzhankun&token=95c73ae661f85aa0";
+    final static String SA_SERVER_URL_DEBUG = "【测试项目】数据接收地址";
 
     // release 模式的数据接收地址（发版，正式项目）
-    final static String SA_SERVER_URL_RELEASE = "http://sdk-test.cloud.sensorsdata.cn:8006/sa?project=yangzhankun&token=95c73ae661f85aa0";
+    final static String SA_SERVER_URL_RELEASE = "【正式项目】数据接收地址";
 
     // SDK Debug 模式选项
     //   SensorsDataAPI.DebugMode.DEBUG_OFF - 关闭 Debug 模式
