@@ -1,4 +1,4 @@
-package cn.sa.demo;
+package cn.sa.demo.activity;
 
 
 import android.os.Bundle;
@@ -11,7 +11,12 @@ import android.webkit.WebView;
 
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
-public class WebViewActivity extends AppCompatActivity {
+import cn.sa.demo.R;
+
+/**
+ * 打通 App 和 H5
+ */
+public class WebViewActivity extends BaseActivity {
 
     final static String TAG = "SADemo.WebViewActivity";
 
@@ -19,7 +24,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-        initActionBar();
+        this.setTitle("打通 App 和 H5");
         initWebView();
     }
 
@@ -46,23 +51,6 @@ public class WebViewActivity extends AppCompatActivity {
         });
     }
 
-
-    private void initActionBar() {
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null){
-            actionBar.setTitle("打通 App 和 H5");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-
-
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return super.onSupportNavigateUp();
-    }
 
     @Override
     protected void onDestroy() {

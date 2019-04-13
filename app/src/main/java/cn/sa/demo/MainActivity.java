@@ -11,12 +11,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.ihidea.multilinechooselib.MultiLineChooseLayout;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import cn.sa.demo.activity.BaseActivity;
+import cn.sa.demo.activity.ViewActivity;
+import cn.sa.demo.activity.WebViewActivity;
+
+public class MainActivity extends  AppCompatActivity {
 
     final static String TAG = "SADemo.MainActivity";
 
@@ -24,15 +37,87 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.setTitle("启动页");
+        this.setTitle("demo");
         // TODO trackInstallation 记录激活事件、并做渠道追踪，这里 type 传 0
         trackInstallation(0);
-        track();// 代码埋点示例
-        login();// 用户 ID 关联示例
-        profileSet();// 设置用户属性示例
-        openWebViewActivity();
+        initFlowLables();
+
+
     }
 
+    @SuppressWarnings("unchecked")
+    private void initFlowLables() {
+        MultiLineChooseLayout autoFlowLayout = findViewById(R.id.flow_main);
+        final ArrayList<String> mData = new ArrayList<String>();
+        mData.add("代码埋点(track)");
+        mData.add("设置用户属性(profileSet)");
+        mData.add("注册成功/登录成功(login)");
+        mData.add("打通 App 与 H5");
+        mData.add("常用控件");
+        mData.add("Fragment");
+        mData.add("第三方点击");
+        autoFlowLayout.setList(mData);
+
+        autoFlowLayout.setOnItemClickListener(new MultiLineChooseLayout.onItemClickListener() {
+            @Override
+            public void onItemClick(int i, String s) {
+                switch (i) {
+                    case 0:
+                        track();//代码埋点
+                        break;
+                    case 1:
+                        profileSet();//设置用户属性
+                        break;
+                    case 2:
+                        login();//注册成功/登录成功
+                        break;
+                    case 3:
+                        openWebViewActivity();//打通 App 与 H5
+                        break;
+                    case 4:
+                        openViewActivity();//常用控件
+                        break;
+                    case 5:
+                        openFragmentActivity();//Fragment
+                        break;
+                    case 6:
+                        openOtherClickActivity();//第三方点击
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+
+
+
+
+    }
+
+    /**
+     *
+     *
+     */
+    private void openOtherClickActivity() {
+
+    }
+
+    /**
+     *
+     *
+     */
+    private void openFragmentActivity() {
+
+    }
+
+    /**
+     *
+     *
+     */
+    private void openViewActivity() {
+        startActivity(new Intent(MainActivity.this, ViewActivity.class));
+    }
 
 
     /**
@@ -40,9 +125,7 @@ public class MainActivity extends AppCompatActivity {
      * 文档：https://www.sensorsdata.cn/manual/android_sdk.html#3-追踪事件
      */
     private void track() {
-        findViewById(R.id.btn_main_track).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
                 Toast.makeText(MainActivity.this, "代码埋点", Toast.LENGTH_SHORT).show();
                 // TODO 代码埋点
                 try {
@@ -56,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-            }
-        });
+
+
     }
 
     /**
@@ -65,14 +148,10 @@ public class MainActivity extends AppCompatActivity {
      * 文档：https://www.sensorsdata.cn/manual/android_sdk.html#41-用户注册
      */
     private void login() {
-        findViewById(R.id.btn_main_login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "注册成功/登录成功", Toast.LENGTH_SHORT).show();
                 // TODO 注册成功/登录成功 时，调用 login 传入登录ID
                 SensorsDataAPI.sharedInstance().login("你们服务端分配给用户的具体的登录ID");
-            }
-        });
+
     }
 
     /**
@@ -80,9 +159,6 @@ public class MainActivity extends AppCompatActivity {
      * 文档：https://www.sensorsdata.cn/manual/android_sdk.html#5-设置用户属性
      */
     private void profileSet() {
-        findViewById(R.id.btn_main_profile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "设置用户属性", Toast.LENGTH_SHORT).show();
                 // TODO 设置用户属性
                 try {
@@ -94,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-        });
+
     }
 
     @Override
@@ -138,11 +213,6 @@ public class MainActivity extends AppCompatActivity {
      * 打开 WebViewActivity
      */
     private void openWebViewActivity() {
-        findViewById(R.id.btn_main_app_h5).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, WebViewActivity.class));
-            }
-        });
     }
 }

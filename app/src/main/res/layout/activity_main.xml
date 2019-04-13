@@ -1,56 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
-    <Button
-        android:id="@+id/btn_main_track"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+
+
+    <com.ihidea.multilinechooselib.MultiLineChooseLayout
+        android:id="@+id/flow_main"
+        style="@style/FlowLayout"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="代码埋点"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <Button
-        android:id="@+id/btn_main_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="注册成功/登录成功"
-        app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-         />
-
-    <Button
-        android:id="@+id/btn_main_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="设置用户属性"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="5dp">
+    </com.ihidea.multilinechooselib.MultiLineChooseLayout>
 
 
-    <Button
-        android:id="@+id/btn_main_app_h5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="打通 App 和 H5"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

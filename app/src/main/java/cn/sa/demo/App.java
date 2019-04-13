@@ -6,6 +6,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
+
+import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class App extends Application {
      */
 
     // debug 模式的数据接收地址 （测试，测试项目）
-    final static String SA_SERVER_URL_DEBUG = "【测试项目】数据接收地址";
+    final static String SA_SERVER_URL_DEBUG = "http://sdk-test.datasink.sensorsdata.cn/sa?project=yangzhankun&token=95c73ae661f85aa0";
 
     // release 模式的数据接收地址（发版，正式项目）
     final static String SA_SERVER_URL_RELEASE = "【正式项目】数据接收地址";
@@ -49,6 +51,9 @@ public class App extends Application {
             if(TextUtils.isEmpty("")){}
 
             // 初始化 SDK
+            //SensorsDataAPI.sharedInstance(this,new SAConfigOptions(isDebugMode(this)?SA_SERVER_URL_DEBUG:SA_SERVER_URL_RELEASE));
+
+            // 初始化 SDK
             SensorsDataAPI.sharedInstance(
                     context,                                                                                  // 传入 Context
                     (isDebugMode = isDebugMode(context)) ? SA_SERVER_URL_DEBUG : SA_SERVER_URL_RELEASE,       // 数据接收的 URL
@@ -70,6 +75,8 @@ public class App extends Application {
             // $AppClick
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
             SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
+
+            SensorsDataAPI.sharedInstance().enableLog(true);
 
         } catch (Exception e) {
             e.printStackTrace();
