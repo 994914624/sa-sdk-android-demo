@@ -6,7 +6,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
-
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 import org.json.JSONObject;
@@ -27,13 +26,6 @@ public class App extends Application {
     // release 模式的数据接收地址（发版，正式项目）
     final static String SA_SERVER_URL_RELEASE = "【正式项目】数据接收地址";
 
-    // SDK Debug 模式选项
-    //   SensorsDataAPI.DebugMode.DEBUG_OFF - 关闭 Debug 模式
-    //   SensorsDataAPI.DebugMode.DEBUG_ONLY - 打开 Debug 模式，校验数据，但不进行数据导入
-    //   SensorsDataAPI.DebugMode.DEBUG_AND_TRACK - 打开 Debug 模式，校验数据，并将数据导入到 Sensors Analytics 中
-    // TODO 注意！请不要在正式发布的 App 中使用 DEBUG_AND_TRACK /DEBUG_ONLY 模式！ 请使用 DEBUG_OFF 模式！！！
-
-    // debug 时，初始化 SDK 使用测试项目数据接收 URL 、使用 DEBUG_AND_TRACK 模式；release 时，初始化 SDK 使用正式项目数据接收 URL 、使用 DEBUG_OFF 模式。
     private boolean isDebugMode;
 
     @Override
@@ -48,16 +40,10 @@ public class App extends Application {
      */
     private void initSensorsDataSDK(Context context) {
         try {
-            if(TextUtils.isEmpty("")){}
+            isDebugMode = isDebugMode(this);
 
             // 初始化 SDK
-            //SensorsDataAPI.sharedInstance(this,new SAConfigOptions(isDebugMode(this)?SA_SERVER_URL_DEBUG:SA_SERVER_URL_RELEASE));
-
-            // 初始化 SDK
-            SensorsDataAPI.sharedInstance(
-                    context,                                                                                  // 传入 Context
-                    (isDebugMode = isDebugMode(context)) ? SA_SERVER_URL_DEBUG : SA_SERVER_URL_RELEASE,       // 数据接收的 URL
-                    isDebugMode ? SensorsDataAPI.DebugMode.DEBUG_AND_TRACK : SensorsDataAPI.DebugMode.DEBUG_OFF); // Debug 模式选项
+            SensorsDataAPI.sharedInstance(this,new SAConfigOptions(isDebugMode?SA_SERVER_URL_DEBUG:SA_SERVER_URL_RELEASE));
 
             // 初始化SDK后，获取应用名称设置为公共属性
             JSONObject properties = new JSONObject();
@@ -75,8 +61,8 @@ public class App extends Application {
             // $AppClick
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
             SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
-
-            SensorsDataAPI.sharedInstance().enableLog(true);
+            // 开启调试日志
+            SensorsDataAPI.sharedInstance().enableLog(isDebugMode);
 
         } catch (Exception e) {
             e.printStackTrace();

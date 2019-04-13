@@ -6,8 +6,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +26,7 @@ import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -31,6 +36,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,8 +70,11 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.view_img_btn).setOnClickListener(this);
         // CheckedTextView
         initCheckedTextView();
+        // SeekBar
         initSeekBar();
+        // RatingBar
         initRatingBar();
+        // Spinner
         initSpinner();
         // SwitchCompat
         initSwitchCompat();
@@ -74,14 +84,21 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         initCheckBox();
         // RadioButton
         initRadioButton();
+        // RadioGroup
         initRadioGroup();
+        // Dialog
         initDialog();
+        // ContextMenu
         initContextMenu();
+        // ListView
         initListView();
+        // GridView
         initGridView();
+        // ExpandableListView
         initExpandableListView();
+        // RecycleView
+        initRecycleView();
     }
-
 
 
     /*
@@ -93,7 +110,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         checkedTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ViewActivity.this,"CheckedTextView",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "CheckedTextView", Toast.LENGTH_SHORT).show();
                 checkedTextView.toggle();
             }
         });
@@ -163,21 +180,21 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * SwitchCompat
      */
     private void initSwitchCompat() {
-        final SwitchCompat switchCompat1= findViewById(R.id.view_sc_1);
+        final SwitchCompat switchCompat1 = findViewById(R.id.view_sc_1);
         switchCompat1.setOnClickListener(new View.OnClickListener() {
             @Override
             @TargetApi(14)
             public void onClick(View view) {
-                Toast.makeText(ViewActivity.this,"SwitchCompat1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "SwitchCompat1", Toast.LENGTH_SHORT).show();
                 switchCompat1.setChecked(switchCompat1.isChecked());
             }
         });
 
-        SwitchCompat switchCompat2= findViewById(R.id.view_sc_2);
+        SwitchCompat switchCompat2 = findViewById(R.id.view_sc_2);
         switchCompat2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Toast.makeText(ViewActivity.this,"SwitchCompat2",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "SwitchCompat2", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -186,20 +203,20 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * ToggleButton
      */
     private void initToggleButton() {
-        final ToggleButton toggleButton = (ToggleButton)findViewById(R.id.view_tb_1);
+        final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.view_tb_1);
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ViewActivity.this,""+toggleButton.isChecked(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "" + toggleButton.isChecked(), Toast.LENGTH_SHORT).show();
                 toggleButton.setChecked(toggleButton.isChecked());
             }
         });
 
-        ToggleButton toggleButton2= findViewById(R.id.view_tb_2);
+        ToggleButton toggleButton2 = findViewById(R.id.view_tb_2);
         toggleButton2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Toast.makeText(ViewActivity.this,""+b,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "" + b, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -228,7 +245,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         radioButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ViewActivity.this,"RadioButton1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "RadioButton1", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -236,7 +253,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         radioButton2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(ViewActivity.this,"RadioButton2",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "RadioButton2", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -332,10 +349,9 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
                 Toast.makeText(ViewActivity.this, "忽略" + which, Toast.LENGTH_SHORT).show();
             }
         });
-        Dialog dia=builder.create();
+        Dialog dia = builder.create();
         dia.show();
     }
-
 
 
     /**
@@ -359,7 +375,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Toast.makeText(ViewActivity.this,"ContextMenu:"+item.getTitle(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(ViewActivity.this, "ContextMenu:" + item.getTitle(), Toast.LENGTH_SHORT).show();
         return super.onContextItemSelected(item);
     }
 
@@ -384,14 +400,14 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * ListView
      */
     private void initListView() {
-        ListView listView=  findViewById(R.id.view_listView);
-        String [] arr={"ListView item1","ListView item2","ListView item3"};
-        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(ViewActivity.this, android.R.layout.simple_expandable_list_item_1,arr);
+        ListView listView = findViewById(R.id.view_listView);
+        String[] arr = {"ListView item1", "ListView item2", "ListView item3"};
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(ViewActivity.this, android.R.layout.simple_expandable_list_item_1, arr);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ViewActivity.this,"ListView:"+position,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "ListView:" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -401,20 +417,20 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * GridView
      */
     private void initGridView() {
-        String [] arr2={"GridView item1","GridView item2","GridView item3"};
-        GridView gridView= findViewById(R.id.view_gridView);
-        gridView.setAdapter(new ArrayAdapter<String>(ViewActivity.this, android.R.layout.simple_expandable_list_item_1,arr2));
+        String[] arr2 = {"GridView item1", "GridView item2", "GridView item3"};
+        GridView gridView = findViewById(R.id.view_gridView);
+        gridView.setAdapter(new ArrayAdapter<String>(ViewActivity.this, android.R.layout.simple_expandable_list_item_1, arr2));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ViewActivity.this,"GridView:"+position,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "GridView:" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
     ExpandableListView expandableListView = null;
-    List<String> parent = null;
+    List<String> groupList = null;
     Map<String, List<String>> map = null;
 
     /**
@@ -427,7 +443,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                Toast.makeText(ViewActivity.this,"onChildClick",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "onChildClick", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -435,7 +451,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                Toast.makeText(ViewActivity.this,"onGroupClick",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "onGroupClick", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -446,10 +462,10 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      *
      */
     public void initData() {
-        parent = new ArrayList<String>();
-        parent.add("Group1");
-        parent.add("Group2");
-        parent.add("Group3");
+        groupList = new ArrayList<String>();
+        groupList.add("Group1");
+        groupList.add("Group2");
+        groupList.add("Group3");
 
         map = new HashMap<String, List<String>>();
         List<String> list1 = new ArrayList<String>();
@@ -475,11 +491,11 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * ExpandableListView Adapter
      *
      */
-    class MyBaseExpandableListAdapter extends BaseExpandableListAdapter   {
+    class MyBaseExpandableListAdapter extends BaseExpandableListAdapter {
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            String key = parent.get(groupPosition);
+            String key = groupList.get(groupPosition);
             return (map.get(key).get(childPosition));
         }
 
@@ -490,7 +506,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup par) {
-            String key = parent.get(groupPosition);
+            String key = groupList.get(groupPosition);
             String info = map.get(key).get(childPosition);
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) ViewActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -503,19 +519,19 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            String key = parent.get(groupPosition);
+            String key = groupList.get(groupPosition);
             int size = map.get(key).size();
             return size;
         }
 
         @Override
         public Object getGroup(int groupPosition) {
-            return parent.get(groupPosition);
+            return groupList.get(groupPosition);
         }
 
         @Override
         public int getGroupCount() {
-            return parent.size();
+            return groupList.size();
         }
 
         @Override
@@ -530,7 +546,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
                 convertView = inflater.inflate(R.layout.expandable_group, null);
             }
             TextView tv = (TextView) convertView.findViewById(R.id.yang_parent_textview);
-            tv.setText(parent.get(groupPosition));
+            tv.setText(groupList.get(groupPosition));
             return tv;
         }
 
@@ -546,9 +562,79 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    /**
+     * RecycleView
+     */
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private void initRecycleView() {
+        mLayoutManager = new LinearLayoutManager(ViewActivity.this, LinearLayoutManager.VERTICAL, false);
+        ArrayList<String> data = new ArrayList<>();
+        data.add("RecyclerView item1");
+        data.add("RecyclerView item2");
+        data.add("RecyclerView item3");
+        mAdapter = new MyRecyclerViewAdapter(data);
+        mRecyclerView = findViewById(R.id.view_recycleView);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+
+    public static class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
+
+        private ArrayList<String> mData;
+
+        public MyRecyclerViewAdapter(ArrayList<String> data) {
+            this.mData = data;
+
+        }
+
+        public void updateData(ArrayList<String> data) {
+            this.mData = data;
+            notifyDataSetChanged();
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item, parent, false);
+            ViewHolder viewHolder = new ViewHolder(v);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+            holder.mTv.setText(mData.get(position));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "RecyclerView click", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mData == null ? 0 : mData.size();
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView mTv;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                mTv = (TextView) itemView.findViewById(R.id.tv_recycleView_item);
+            }
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(ViewActivity.this,"点击",Toast.LENGTH_SHORT).show();
+        Toast.makeText(ViewActivity.this, "点击", Toast.LENGTH_SHORT).show();
     }
 }
