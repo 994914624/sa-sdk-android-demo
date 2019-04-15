@@ -7,11 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,19 +27,17 @@ import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +46,11 @@ import java.util.Map;
 import cn.sa.demo.R;
 
 /**
- * 常用控件
+ * 常用控件的点击
+ *
+ * (Button、TextView、ImageView、ImageButton、CheckedTextView、SeekBar、RatingBar、Spinner、
+ * SwitchCompat、ToggleButton、CheckBox、RadioButton、RadioGroup、Dialog、ContextMenu、OptionsMenu、
+ * TabLayout、TabHost、LinearLayout、ListView、GridView、ExpandableListView、RecycleView)
  */
 public class ViewActivity extends BaseActivity implements View.OnClickListener {
 
@@ -55,7 +58,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        this.setTitle("常用控件");
+        this.setTitle("常用控件的点击");
         initView();
     }
 
@@ -90,6 +93,14 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         initDialog();
         // ContextMenu
         initContextMenu();
+        // TabLayout
+        initTabLayout();
+        initTabLayout2();
+        // TabHost
+        initTabHost();
+        initTabHost2();
+        // LinearLayout
+        initLinearLayout();
         // ListView
         initListView();
         // GridView
@@ -99,7 +110,6 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         // RecycleView
         initRecycleView();
     }
-
 
     /*
      * CheckedTextView
@@ -175,7 +185,6 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-
     /**
      * SwitchCompat
      */
@@ -203,7 +212,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * ToggleButton
      */
     private void initToggleButton() {
-        final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.view_tb_1);
+        final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.view_tb);
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -226,7 +235,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * CheckBox
      */
     private void initCheckBox() {
-        findViewById(R.id.view_cb_1).setOnClickListener(this);
+        findViewById(R.id.view_cb).setOnClickListener(this);
         CheckBox checkBox2 = findViewById(R.id.view_cb_2);
         checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -241,11 +250,11 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      * RadioButton
      */
     private void initRadioButton() {
-        final RadioButton radioButton1 = findViewById(R.id.view_rb_1);
+        final RadioButton radioButton1 = findViewById(R.id.view_rb);
         radioButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ViewActivity.this, "RadioButton1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewActivity.this, "RadioButton", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -275,10 +284,10 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
      *
      */
     private void initDialog() {
-        findViewById(R.id.view_tv_dialog_1).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.view_tv_dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog1();
+                showDialog();
             }
         });
 
@@ -291,9 +300,9 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /*
-     * Dialog1
+     * Dialog
      */
-    private void showDialog1() {
+    private void showDialog() {
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(ViewActivity.this);
 
@@ -353,7 +362,6 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         dia.show();
     }
 
-
     /**
      * ContextMenu
      */
@@ -395,6 +403,126 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * TabLayout
+     */
+    private void initTabLayout() {
+        TabLayout tabLayout = findViewById(R.id.view_tabLayout_1);
+        String[] arr ={"首页", "分类", "朋友","我"};
+        for (String title : arr) {
+            TabLayout.Tab tab = tabLayout.newTab();
+            tab.setText(title);
+            tabLayout.addTab(tab);
+        }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Toast.makeText(ViewActivity.this,"TabLayout:"+tab.getText(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
+
+    /**
+     * TabLayout (custom tab)
+     */
+    private void initTabLayout2() {
+        TabLayout tabLayout2 = findViewById(R.id.view_tabLayout_2);
+        String[] arrTitle ={"首页", "分类", "朋友","我"};
+        int[] arrImg = new int[]{R.drawable.selector_home, R.drawable.selector_classify,R.drawable.selector_friend,R.drawable.selector_my};
+
+        for (int i = 0;i< arrTitle.length;i++) {
+            TabLayout.Tab tab = tabLayout2.newTab();
+            View view = LayoutInflater.from(this).inflate(R.layout.tab_custom, null);
+            tab.setCustomView(view);
+            TextView tvTitle = (TextView) view.findViewById(R.id.tv_tab);
+            tvTitle.setText(arrTitle[i]);
+            ImageView imgTab = (ImageView) view.findViewById(R.id.img_tab);
+            imgTab.setImageResource(arrImg[i]);
+            tabLayout2.addTab(tab);
+        }
+        tabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Toast.makeText(ViewActivity.this,"TabLayout2:"+tab.getText(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    /**
+     * TabHost
+     */
+    private void initTabHost() {
+        TabHost tabHost = findViewById(R.id.view_tabHost);
+        tabHost.setup();
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("选项一").setContent(R.id.view_tabHost_ll_1));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("选项二").setContent(R.id.view_tabHost_ll_2));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("选项三").setContent(R.id.view_tabHost_ll_3));
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                Toast.makeText(ViewActivity.this, "TabHost", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    /**
+     * TabHost2 (custom tab)
+     */
+    private void initTabHost2() {
+        TabHost tabHost = findViewById(R.id.view_tabHost_2);
+        tabHost.setup();
+        String[] arrTitle ={"选项一", "选项二", "选项三"};
+        int[] arrImg = new int[]{R.drawable.selector_home, R.drawable.selector_classify,R.drawable.selector_friend};
+        for (int i = 0;i< arrTitle.length;i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.tab_custom, null);
+            TextView tvTitle = view.findViewById(R.id.tv_tab);
+            tvTitle.setText(arrTitle[i]);
+            ImageView imgTab = view.findViewById(R.id.img_tab);
+            imgTab.setImageResource(arrImg[i]);
+            int contentId = R.id.view_tabHost2_ll_1;
+            if(i==1) contentId = R.id.view_tabHost2_ll_2;
+            if(i==2) contentId = R.id.view_tabHost2_ll_3;
+            int j = i+1;
+            tabHost.addTab(tabHost.newTabSpec("tab"+j).setIndicator(view).setContent(contentId));
+        }
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                Toast.makeText(ViewActivity.this, "TabHost", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    /**
+     * LinearLayout
+     */
+    private void initLinearLayout() {
+        findViewById(R.id.view_ll).setOnClickListener(this);
+    }
 
     /**
      * ListView
@@ -520,8 +648,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public int getChildrenCount(int groupPosition) {
             String key = groupList.get(groupPosition);
-            int size = map.get(key).size();
-            return size;
+            return map.get(key).size();
         }
 
         @Override
@@ -561,7 +688,6 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-
     /**
      * RecycleView
      */
@@ -578,6 +704,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         mAdapter = new MyRecyclerViewAdapter(data);
         mRecyclerView = findViewById(R.id.view_recycleView);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -586,9 +713,8 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
 
         private ArrayList<String> mData;
 
-        public MyRecyclerViewAdapter(ArrayList<String> data) {
+        MyRecyclerViewAdapter(ArrayList<String> data) {
             this.mData = data;
-
         }
 
         public void updateData(ArrayList<String> data) {
@@ -600,8 +726,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder(v);
-            return viewHolder;
+            return new ViewHolder(v);
         }
 
         @Override
@@ -611,8 +736,6 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), "RecyclerView click", Toast.LENGTH_SHORT).show();
-
-
                 }
             });
         }
@@ -622,16 +745,14 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
             return mData == null ? 0 : mData.size();
         }
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
+        static class ViewHolder extends RecyclerView.ViewHolder {
             TextView mTv;
-
-            public ViewHolder(View itemView) {
+            ViewHolder(View itemView) {
                 super(itemView);
                 mTv = (TextView) itemView.findViewById(R.id.tv_recycleView_item);
             }
         }
     }
-
 
     @Override
     public void onClick(View v) {

@@ -239,11 +239,11 @@
                     android:orientation="vertical">
 
                     <ToggleButton
-                        android:id="@+id/view_tb_1"
+                        android:id="@+id/view_tb"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
-                        android:textOff="关1"
-                        android:textOn="开1" />
+                        android:textOff="关"
+                        android:textOn="开" />
 
                     <ToggleButton
                         android:id="@+id/view_tb_2"
@@ -273,10 +273,10 @@
                     android:orientation="vertical">
 
                     <CheckBox
-                        android:id="@+id/view_cb_1"
+                        android:id="@+id/view_cb"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:text="复选1" />
+                        android:text="复选" />
 
                     <CheckBox
                         android:id="@+id/view_cb_2"
@@ -305,10 +305,10 @@
                     android:orientation="vertical">
 
                     <RadioButton
-                        android:id="@+id/view_rb_1"
+                        android:id="@+id/view_rb"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
-                        android:text="RadioButton1" />
+                        android:text="RadioButton" />
 
                     <RadioButton
                         android:id="@+id/view_rb_2"
@@ -392,12 +392,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/view_tv_dialog_1"
+                        android:id="@+id/view_tv_dialog"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:layout_height="50dp"
-                        android:text="Dialog1" />
+                        android:text="Dialog" />
 
                     <TextView
                         android:id="@+id/view_tv_dialog_2"
@@ -423,21 +423,219 @@
                 app:cardUseCompatPadding="true"
                 app:contentPadding="2dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
                     <TextView
                         android:id="@+id/view_tv_menu"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:gravity="center"
                         android:layout_height="50dp"
                         android:text="ContextMenu(Long press)" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
+
+                <android.support.design.widget.TabLayout
+                    android:layout_width="match_parent"
+                    app:tabBackground="@android:color/transparent"
+                    android:id="@+id/view_tabLayout_1"
+                    android:layout_height="wrap_content"/>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
+
+                <android.support.design.widget.TabLayout
+                    android:layout_width="match_parent"
+                    app:tabBackground="@android:color/transparent"
+                    android:id="@+id/view_tabLayout_2"
+                    android:layout_height="wrap_content"/>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
+
+                <TabHost
+                    android:id="@+id/view_tabHost"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TabWidget
+                            android:id="@android:id/tabs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <FrameLayout
+                            android:id="@android:id/tabcontent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:id="@+id/view_tabHost_ll_1"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:text="内容一" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/view_tabHost_ll_2"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:text="内容二" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/view_tabHost_ll_3"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:text="内容三" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+                </TabHost>
+            </android.support.v7.widget.CardView>
 
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
 
+                <TabHost
+                    android:id="@+id/view_tabHost_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TabWidget
+                            android:id="@android:id/tabs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <FrameLayout
+                            android:id="@android:id/tabcontent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:id="@+id/view_tabHost2_ll_1"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:text="内容一" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/view_tabHost2_ll_2"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:text="内容二" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/view_tabHost2_ll_3"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:text="内容三" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+                </TabHost>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/view_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" >
+                    <TextView
+                        android:text="View"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                        <TextView
+                            android:text="Group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -475,6 +673,7 @@
 
                 <cn.sa.demo.custom.MyGridView
                     android:id="@+id/view_gridView"
+                    android:numColumns="3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </android.support.v7.widget.CardView>

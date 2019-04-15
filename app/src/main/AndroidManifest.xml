@@ -12,9 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ViewActivity"></activity>
+        <activity android:name=".activity.FragmentActivity"></activity>
+        <activity android:name=".activity.ClickActivity" />
+        <activity
+            android:name=".activity.ViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".activity.BaseActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

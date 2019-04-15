@@ -1,14 +1,8 @@
 package cn.sa.demo.activity;
 
-import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.SpinnerAdapter;
-import android.widget.Toolbar;
-
 import cn.sa.demo.R;
 
 public class BaseActivity extends AppCompatActivity {
@@ -20,8 +14,6 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
         initActionBar();
     }
-
-
 
     private void initActionBar() {
         ActionBar mActionBar=getSupportActionBar();
@@ -36,4 +28,23 @@ public class BaseActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

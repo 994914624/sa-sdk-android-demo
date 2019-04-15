@@ -7,30 +7,4 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
-    <style name="FlowLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="item_textColor">#666666</item>
-        <item name="item_backgroundColor">#ffffff</item>
-        <item name="item_selectedTextColor">#ffffff</item>
-        <item name="item_selectedBackgroundColor">#7289ff</item>
-        <item name="item_radius">0dp</item>
-        <item name="item_strokeColor">#939393</item>
-        <item name="item_selectedStrokeColor">#939393</item>
-        <item name="item_strokeWidth">1px</item>
-        <item name="item_horizontalSpacing">10dp</item>
-        <!--这里设置固定大小,padding为0-->
-        <item name="item_horizontalPadding">15dp</item>
-        <item name="item_verticalPadding">10dp</item>
-        <!--单位dp-->
-        <item name="item_width">wrap_content</item>
-        <item name="item_height">wrap_content</item>
-        <!--限制tag显示长度,规则查看Textview-->
-        <item name="item_maxEms">5</item>
-        <!--多选-->
-        <item name="item_multiChooseable">false</item>
-    </style>
-
 </resources>

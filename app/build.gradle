@@ -32,10 +32,10 @@ dependencies {
     //添加 Sensors Analytics SDK 依赖
     implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.5'
     //implementation(name: 'SensorsAnalyticsSDK-release', ext: 'aar')
-    //流式标签
-    implementation 'liji.library.dev:multilinechooselib:2.0.3'
+
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
 }
 
 repositories {
