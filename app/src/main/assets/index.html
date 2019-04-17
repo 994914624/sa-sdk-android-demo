@@ -9,7 +9,6 @@
 		 body,html{
 			height: 100%;
             min-height: 100%;
-            #text-align:center;
         }
 		.button {
 			background: #2DC992;
@@ -17,18 +16,12 @@
 			width: 100px;
 			border: 1px solid #fff;
 			outline: none;
-			#text-align: center;
-			#position: fixed;
-        	#left: 50%;
-        	#top: 50%;
-        	#transform: translate(-50%, -50%);
         	position: absolute;margin:auto; top: 0;left: 0;right: 0;bottom: 0;
 		}
 		.center {
-	width: 100%;
-	height: 100%;
-	position: relative;
-
+			width: 100%;
+			height: 100%;
+			position: relative;
 		}
 	</style>
 
@@ -36,6 +29,7 @@
 <!-- 引入神策 JS SDK ,且配置 use_app_track:true 参数。-->
 <!-- server_url 需要和 App 内的数据接收 URL一致，App 和 H5 才能打通。-->
 <!-- 此 html 页面只是用于验证 App 和 H5 打通。-->
+
 <script>
 (function(para) {
   var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script',x = null,y = null;
@@ -56,19 +50,20 @@
 })({
   sdk_url: 'http://static.sensorsdata.cn/sdk/1.10.4/sensorsdata.min.js',
   heatmap_url: 'http://static.sensorsdata.cn/sdk/1.10.4/heatmap.min.js',
-  name: 'sa',
+  name: 'sensors',
   // 打通 App 和 H5
   use_app_track:true,
-  server_url: '数据接收地址',
+  server_url: 'http://sdk-test.datasink.sensorsdata.cn/sa?token=95c73ae661f85aa0&project=yangzhankun',
   heatmap:{}
 });
-sa.quick('autoTrack');
+sensors.quick('autoTrack');
 </script>
+
 </head>
 
 <body>
 	<div class="center">
-		<button class="button" id="btn" >Button</button>
+		<button class="button" id="btn" >JS button</button>
 	</div>
 </body>
 

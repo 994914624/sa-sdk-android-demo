@@ -61,6 +61,10 @@ public class App extends Application {
             // $AppClick
             eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
             SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
+
+            // 开启 Fragment $AppViewScreen
+            SensorsDataAPI.sharedInstance().trackFragmentAppViewScreen();
+
             // 开启调试日志
             SensorsDataAPI.sharedInstance().enableLog(isDebugMode);
 

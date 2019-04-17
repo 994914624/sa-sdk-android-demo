@@ -6,101 +6,107 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        app:cardBackgroundColor="#ffffff"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="2dp">
 
         <LinearLayout
-            android:id="@+id/main_ll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_main_track"
-                android:gravity="center"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="代码埋点(track)" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
 
-            <TextView
-                android:id="@+id/tv_main_profileSet"
-                android:gravity="center"
+                <LinearLayout
+                    android:id="@+id/main_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_main_track"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="代码埋点(track)" />
+
+                    <TextView
+                        android:id="@+id/tv_main_profileSet"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="设置用户属性(profileSet)" />
+
+                    <TextView
+                        android:id="@+id/tv_main_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="注册成功/登录成功(login)" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="设置用户属性(profileSet)" />
-            <TextView
-                android:id="@+id/tv_main_login"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="注册成功/登录成功(login)" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
+
+                <LinearLayout
+                    android:id="@+id/main_ll_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_main_baseView"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="常用控件" />
+
+                    <TextView
+                        android:id="@+id/tv_main_clickType"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="控件设置点击的方式" />
+
+                    <TextView
+                        android:id="@+id/tv_main_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="Fragment" />
+
+                    <TextView
+                        android:id="@+id/tv_main_appH5"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="打通 App 与 H5、注入 JS SDK" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        app:cardBackgroundColor="#ffffff"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="2dp">
-
-        <LinearLayout
-            android:id="@+id/main_ll_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_main_baseView"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="常用控件的点击" />
-
-            <TextView
-                android:id="@+id/tv_main_clickType"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="控件设置点击的方式" />
-            <TextView
-                android:id="@+id/tv_main_fragment"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Fragment" />
-            <TextView
-                android:id="@+id/tv_main_appH5"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="打通 App 与 H5" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

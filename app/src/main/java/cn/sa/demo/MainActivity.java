@@ -4,17 +4,17 @@ package cn.sa.demo;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.ArrayList;
+
 import cn.sa.demo.activity.ClickActivity;
 import cn.sa.demo.activity.FragmentActivity;
 import cn.sa.demo.activity.ViewActivity;
@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // TODO trackInstallation 记录激活事件、并做渠道追踪
         trackInstallation(0);
         initView();
-
-
     }
 
     private void initView() {
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 示例：用户 ID 关联
-     * 文档：https://www.sensorsdata.cn/manual/android_sdk.html#41-用户注册
+     * 文档：https://www.sensorsdata.cn/manual/android_sdk.html#41-匿名-id-和登录-id-关联
      */
     private void login() {
         Toast.makeText(MainActivity.this, "注册成功/登录成功", Toast.LENGTH_SHORT).show();
@@ -104,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *             记录激活事件、并做渠道追踪。
      *             此方法，在第一个 Activity 的 onCreate 中调用，且要在 onRequestPermissionsResult 中调用。
      *             <p>
-     *             App 渠道追踪文档：https://www.sensorsdata.cn/manual/app_channel_tracking.html
+     *             文档：https://www.sensorsdata.cn/manual/android_sdk.html#32-记录激活事件
      */
     private void trackInstallation(int type) {
         try {
