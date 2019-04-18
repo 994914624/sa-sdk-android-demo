@@ -31,9 +31,14 @@
 
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
-
+                <data
+                    android:host="debugmode"
+                    android:scheme="sa64b7c48f" />
                 <data
                     android:host="heatmap"
+                    android:scheme="sa64b7c48f" />
+                <data
+                    android:host="visualized"
                     android:scheme="sa64b7c48f" />
             </intent-filter>
         </activity>

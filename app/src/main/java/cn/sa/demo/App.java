@@ -40,6 +40,7 @@ public class App extends Application {
      */
     private void initSensorsDataSDK(Context context) {
         try {
+
             isDebugMode = isDebugMode(this);
 
             // 初始化 SDK

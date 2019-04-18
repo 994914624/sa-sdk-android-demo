@@ -102,7 +102,6 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
     /**
      * 6. ButterKnife 方式。
      */
-    //找到 view 设置 setOnClickListener
 //    view = Utils.findRequiredView(source, R.id.tv_click_6, "method 'butterKnife'");
 //    view7f0800e7 = view;
 //    view.setOnClickListener(new DebouncingOnClickListener() {
