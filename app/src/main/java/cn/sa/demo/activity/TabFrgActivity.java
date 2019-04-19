@@ -5,8 +5,6 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.widget.Toast;
-
 import cn.sa.demo.R;
 import cn.sa.demo.fragment.BaseV4Fragment;
 import cn.sa.demo.fragment.v4.Frg_4;
@@ -72,7 +70,6 @@ public class TabFrgActivity extends BaseActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Toast.makeText(TabFrgActivity.this, "TabLayout:" + tab.getText(), Toast.LENGTH_SHORT).show();
                 switch (tab.getPosition()) {
                     case 0:
                         showFrg(frg_4);

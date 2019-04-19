@@ -14,7 +14,7 @@ buildscript {
         // in the individual module build.gradle files
 
         //添加 Sensors Analytics android-gradle-plugin 依赖
-        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.3'
+        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.4'
         // butterknife
         classpath 'com.jakewharton:butterknife-gradle-plugin:10.1.0'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" }

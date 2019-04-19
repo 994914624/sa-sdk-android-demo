@@ -63,7 +63,6 @@ public class TabAppFrgActivity extends BaseActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Toast.makeText(TabAppFrgActivity.this, "TabLayout:" + tab.getText(), Toast.LENGTH_SHORT).show();
                 switch (tab.getPosition()) {
                     case 0:
                         showFrg(frg_app_1);

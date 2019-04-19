@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:gravity="center"
-                        android:text="控件设置点击的方式" />
+                        android:text="设置点击的方式" />
 
                     <TextView
                         android:id="@+id/tv_main_fragment"
