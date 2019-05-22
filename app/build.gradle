@@ -5,6 +5,9 @@ apply plugin: 'com.sensorsdata.analytics.android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+//gio
+apply plugin: 'com.growingio.android'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -14,6 +17,9 @@ android {
         versionCode 1
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //gio
+        resValue("string", "growingio_project_id", "ad8d6a344dbae02f")
+        resValue("string", "growingio_url_scheme", "growing.6b64332caad4ecfe")
     }
 
     compileOptions {
@@ -45,7 +51,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     //添加 Sensors Analytics SDK 依赖
-    implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.1.0'
+    implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.1.2'
     //implementation(name: 'SensorsAnalyticsSDK-release', ext: 'aar')
 
     // butterknife
@@ -54,6 +60,10 @@ dependencies {
     // rxbinding
     implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //gio
+    //compile 'com.growingio.android:vds-android-agent:1.1.9@aar'
+    //GrowingIO 无埋点 SDK
+    implementation 'com.growingio.android:vds-android-agent:autotrack-2.7.5@aar'
 }
 
 repositories {

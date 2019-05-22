@@ -32,7 +32,7 @@ public class VPVPFrgActivity extends BaseActivity {
     }
 
     private List<Fragment> listPagerViews = null;
-    private PagerAdapter pagerAdapter=null;
+    private static FragmentPagerAdapter pagerAdapter=null;
     private void initViewPager() {
         listPagerViews=new ArrayList<>();
 
@@ -57,6 +57,10 @@ public class VPVPFrgActivity extends BaseActivity {
             }
         };
         viewPager1.setAdapter(pagerAdapter);
-
     }
+
+    public static FragmentPagerAdapter getFragmentPagerAdapter(){
+        return pagerAdapter;
+    }
+
 }

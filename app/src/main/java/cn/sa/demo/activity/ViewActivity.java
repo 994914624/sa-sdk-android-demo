@@ -8,23 +8,34 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.tabs.TabLayout;
+import com.growingio.android.sdk.collection.AbstractGrowingIO;
+import com.growingio.android.sdk.collection.GrowingIO;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SwitchCompat;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -63,6 +74,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
+        initEditText();
         // Button
         findViewById(R.id.view_btn).setOnClickListener(this);
         // TextView
@@ -111,11 +123,45 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         initRecycleView();
     }
 
+    EditText mEditText = null;
+    private void initEditText() {
+         mEditText = findViewById(R.id.view_edt);
+        mEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+//                    editText.clearFocus();
+//                    InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    im.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+            }
+        });
+        //追踪 EditText
+        //GrowingIO.getInstance().trackEditText(mEditText);
+        //mEditText.setTag(AbstractGrowingIO.GROWING_TRACK_TEXT, Boolean.valueOf(true));
+    }
+
     /*
      * CheckedTextView
      */
     private void initCheckedTextView() {
-
         final CheckedTextView checkedTextView = findViewById(R.id.view_ctv);
         checkedTextView.setOnClickListener(new View.OnClickListener() {
             @Override

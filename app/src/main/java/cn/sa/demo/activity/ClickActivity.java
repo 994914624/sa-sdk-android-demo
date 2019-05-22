@@ -7,7 +7,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.jakewharton.rxbinding.view.RxView;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-import com.sensorsdata.analytics.android.sdk.SensorsDataIgnoreTrackAppClick;
 import com.sensorsdata.analytics.android.sdk.SensorsDataTrackViewOnClick;
 import java.util.concurrent.TimeUnit;
 import androidx.databinding.DataBindingUtil;
@@ -51,7 +50,8 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.tv_click_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ClickActivity.this, "方式1", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ClickActivity.this, "方式1", Toast.LENGTH_SHORT).show();
+                //ElementDisplayManager2.saveAllWindowImpress(false);
             }
         });
     }

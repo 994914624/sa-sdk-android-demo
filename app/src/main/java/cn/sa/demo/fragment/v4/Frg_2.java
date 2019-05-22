@@ -23,7 +23,7 @@ public class Frg_2 extends BaseV4Fragment {
     private static final String TAG="SA.Sensors.ViewPger222";
     private View view = null;
     private List<Fragment> listPagerViews = null;
-    private PagerAdapter pagerAdapter=null;
+    private static FragmentPagerAdapter pagerAdapter=null;
 
     public Frg_2() {
         // Required empty public constructor
@@ -67,5 +67,9 @@ public class Frg_2 extends BaseV4Fragment {
             }
         };
         viewPager2.setAdapter(pagerAdapter);
+    }
+
+    public static FragmentPagerAdapter getFragmentPagerAdapter(){
+        return pagerAdapter;
     }
 }

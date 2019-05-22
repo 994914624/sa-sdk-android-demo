@@ -16,8 +16,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void initActionBar() {
-        ActionBar mActionBar=getSupportActionBar();
-        if(mActionBar!=null){
+        ActionBar mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -36,6 +36,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

@@ -6,11 +6,18 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
+
+import com.growingio.android.sdk.collection.Configuration;
+import com.growingio.android.sdk.collection.GrowingIO;
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
+import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
+
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.sa.demo.observer.AppActivityLifecycleCallbacks;
 
 public class App extends Application {
 
@@ -33,8 +40,24 @@ public class App extends Application {
         super.onCreate();
         // 在 Application 的 onCreate 初始化 SDK
         initSensorsDataSDK(this);
+        initGIO();
+        this.registerActivityLifecycleCallbacks(new AppActivityLifecycleCallbacks());
     }
 
+    private void initGIO() {
+        GrowingIO.startWithConfiguration(this, new Configuration()
+                .trackAllFragments()
+                .setChannel("XXX应用商店")
+                .setMutiprocess(true)
+                .setDebugMode(true)
+                .setTestMode(true)
+                .setTrackWebView(true)// 采集所有 WebView
+                .setHashTagEnable(true) // 采集 WebView 页面锚点（单页面）
+
+
+        );
+    }
+private boolean isFirstInstallation;
     /**
      * 初始化 SDK 、设置公共属性、开启自动采集
      */
@@ -42,9 +65,11 @@ public class App extends Application {
         try {
 
             isDebugMode = isDebugMode(this);
-
-            // 初始化 SDK
-            SensorsDataAPI.sharedInstance(this,new SAConfigOptions(isDebugMode?SA_SERVER_URL_DEBUG:SA_SERVER_URL_RELEASE));
+            isFirstInstallation = isDebugMode;
+            // 初始化神策 SDK
+            //SensorsDataAPI.sharedInstance(this,new SAConfigOptions(isDebugMode?SA_SERVER_URL_DEBUG:SA_SERVER_URL_RELEASE));
+            SensorsDataAPI.sharedInstance(this,SA_SERVER_URL_DEBUG, SensorsDataAPI.DebugMode.DEBUG_AND_TRACK);
+            
 
             // 初始化SDK后，获取应用名称设置为公共属性
             JSONObject properties = new JSONObject();

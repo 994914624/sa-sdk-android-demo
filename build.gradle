@@ -17,7 +17,14 @@ buildscript {
         classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.4'
         // butterknife
         classpath 'com.jakewharton:butterknife-gradle-plugin:10.1.0'
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" }
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        //gio
+        //classpath 'com.growingio.android:vds-gradle-plugin:1.1.9'
+
+        //GrowingIO 无埋点 SDK
+        classpath 'com.growingio.android:vds-gradle-plugin:autotrack-2.7.5'
+    }
 }
 
 allprojects {

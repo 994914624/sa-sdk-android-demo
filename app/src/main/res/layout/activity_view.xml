@@ -28,6 +28,34 @@
                 app:cardElevation="1dp"
                 app:cardUseCompatPadding="true"
                 app:contentPadding="2dp"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                >
+
+                <EditText
+                    android:id="@+id/view_edt"
+                    android:layout_width="match_parent"
+                    android:background="@null"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:hint="EditText"
+                    android:gravity="center"
+                    />
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp"
                 >
 
                 <Button

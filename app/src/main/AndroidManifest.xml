@@ -4,6 +4,12 @@
     package="cn.sa.demo">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+
 
     <application
         android:name=".App"
@@ -40,6 +46,14 @@
                 <data
                     android:host="visualized"
                     android:scheme="sa64b7c48f" />
+            </intent-filter>
+            <!-- gio -->
+            <intent-filter>
+                <data android:scheme="growing.6b64332caad4ecfe"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
         <activity
