@@ -69,8 +69,6 @@ private boolean isFirstInstallation;
             // 初始化神策 SDK
             //SensorsDataAPI.sharedInstance(this,new SAConfigOptions(isDebugMode?SA_SERVER_URL_DEBUG:SA_SERVER_URL_RELEASE));
             SensorsDataAPI.sharedInstance(this,SA_SERVER_URL_DEBUG, SensorsDataAPI.DebugMode.DEBUG_AND_TRACK);
-            
-
             // 初始化SDK后，获取应用名称设置为公共属性
             JSONObject properties = new JSONObject();
             properties.put("app_name", getAppName(context));

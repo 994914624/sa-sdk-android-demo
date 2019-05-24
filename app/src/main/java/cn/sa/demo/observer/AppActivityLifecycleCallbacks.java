@@ -50,8 +50,9 @@ public class AppActivityLifecycleCallbacks implements Application.ActivityLifecy
         // registerViewTreeObserver
         registerViewTreeObserver(activity);
         // Display save
-        //ElementDisplayManager2.saveImpOnResume();
+        //
         ElementDisplayManager.saveDisplayOnResume();
+        ElementDisplayManager2.saveImpOnResume();
 
     }
 
@@ -63,8 +64,8 @@ public class AppActivityLifecycleCallbacks implements Application.ActivityLifecy
         // unRegisterViewTreeObserver
         unRegisterViewTreeObserver(activity);
         // Display clean
-        //ElementDisplayManager2.cleanImpOnPause();
         ElementDisplayManager.cleanDisplayOnPause();
+        ElementDisplayManager2.cleanImpOnPause();
     }
 
     @Override

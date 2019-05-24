@@ -50,7 +50,7 @@ public class AppViewTreeObserver implements android.view.ViewTreeObserver.OnGlob
         }
         // Display
         ElementDisplayManager.saveDisplayOnViewTreeObserver();
-        //ElementDisplayManager2.saveImpOnViewTreeObserver();
+        ElementDisplayManager2.saveImpOnViewTreeObserver();
     }
 
     @Override
@@ -58,6 +58,6 @@ public class AppViewTreeObserver implements android.view.ViewTreeObserver.OnGlob
         Log.i(TAG_VTO, "onScrollChanged");
         // Display
         ElementDisplayManager.saveDisplayOnViewTreeObserver();
-        //ElementDisplayManager2.saveImpOnViewTreeObserver();
+        ElementDisplayManager2.saveImpOnViewTreeObserver();
     }
 }

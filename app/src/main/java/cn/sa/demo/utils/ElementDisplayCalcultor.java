@@ -14,11 +14,14 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
 import androidx.viewpager.widget.ViewPager;
 import cn.sa.demo.entity.ViewNodeEntity;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -30,7 +33,6 @@ import static android.view.View.VISIBLE;
 public class ElementDisplayCalcultor {
 
     private final static String TAG = "ElementDisplayCalcultor";
-
 
 
     private String mActivityName;
@@ -75,6 +77,7 @@ public class ElementDisplayCalcultor {
         View view = mDecorViewRef.get();
         if (view instanceof ViewGroup) {//|| view.getWidth() == 0 || view.getHeight() == 0|| view.getVisibility() != VISIBLE||view.getWindowVisibility() == GONE
             if (view.getWindowVisibility() != GONE && view.getWidth() != 0 && view.getHeight() != 0 && view.getVisibility() == VISIBLE) {
+                Log.e(TAG,"traverseViewTree");
                 traverseView(mDecorViewRef.get(), null);
             }
         }
@@ -84,12 +87,13 @@ public class ElementDisplayCalcultor {
      * 遍历 View
      */
     private void traverseView(View view, ViewNodeEntity viewNodeEntity) {
-        if (view instanceof ViewGroup && ! (view instanceof Spinner)) {
+        if (view instanceof ViewGroup && !(view instanceof Spinner)) {
+            Log.e(TAG,"traverseView: "+view.getClass().getSimpleName());
             ViewGroup viewGroup = (ViewGroup) view;
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View childView = viewGroup.getChildAt(i);
 
-                // viewPath & 元素内容
+                // 收集 viewPath & 元素内容
                 viewNodeEntity = collectViewPath(view, viewNodeEntity, i);
 
                 // childView 自身可见
@@ -98,7 +102,6 @@ public class ElementDisplayCalcultor {
                     traverseOK(childView, viewNodeEntity);
                     // 递归，并把 viewPath 向下传递
                     traverseView(childView, new ViewNodeEntity(viewNodeEntity.getViewPath()).setViewPosition(viewNodeEntity.getViewPosition()));
-
                 }
             }
         }
@@ -106,16 +109,20 @@ public class ElementDisplayCalcultor {
 
     }
 
+    /**
+     * 收集 viewPath & index
+     */
     private ViewNodeEntity collectViewPath(View view, ViewNodeEntity viewNodeEntity, int index) {
         // view 的 index
         int position = index;
-        if (view.getParent() != null && (view.getParent() instanceof ViewGroup)) {
+        if (ViewUtil.instanceOfViewPager(view)) {
+            //ViewPgaer 会 destroyItem 导致 viewPath index 改变，这个搞一个固定值
+            position =666;
+        } else if (view instanceof AdapterView) {
+            position = ((AdapterView) view).getFirstVisiblePosition() + index;
+        } else if (view.getParent() != null && (view.getParent() instanceof ViewGroup)) {
             ViewGroup parent = (ViewGroup) view.getParent();
-            if (ViewUtil.instanceOfViewPager(parent)) {
-                position = ((ViewPager) parent).getCurrentItem();
-            } else if (parent instanceof AdapterView) {
-                position = ((AdapterView) parent).getFirstVisiblePosition() + index;
-            } else if (ViewUtil.instanceOfRecyclerView(parent)) {
+             if (ViewUtil.instanceOfRecyclerView(parent)) {
                 int adapterPosition = ViewUtil.getChildAdapterPositionInRecyclerView(view, parent);
                 if (adapterPosition >= 0) {
                     position = adapterPosition;
@@ -161,11 +168,11 @@ public class ElementDisplayCalcultor {
             Log.e(TAG, mActivityName + "(^o^) 遍历好一个 ViewPath: --> " + viewPath + "---@" + viewContent);
 
             //缓存 hashcode
-            ViewNodeEntity okViewNodeEntity = new ViewNodeEntity(mActivityName,viewPath,viewContent);
+            ViewNodeEntity okViewNodeEntity = new ViewNodeEntity(mActivityName, viewPath, viewContent);
             int hashCode = okViewNodeEntity.hashCode();
-            if(!mCachedViewNode.get(hashCode)){
+            if (!mCachedViewNode.get(hashCode)) {
                 mNewViewNode.add(okViewNodeEntity);
-                mCachedViewNode.put(hashCode,true);
+                mCachedViewNode.put(hashCode, true);
             }
         }
     }
