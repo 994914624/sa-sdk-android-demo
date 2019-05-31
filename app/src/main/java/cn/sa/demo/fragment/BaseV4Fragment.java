@@ -2,6 +2,9 @@ package cn.sa.demo.fragment;
 
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +30,15 @@ public class BaseV4Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i(TAG+getClass().getSimpleName()+TAG_2,"onCreateView");
+        Log.i(TAG+getClass().getSimpleName()+TAG_2,"onCreateView @");
         return inflater.inflate(R.layout.fragment_base_supportv4, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.setTag(R.id.fragment_root_view,this);
+        Log.i(TAG+getClass().getSimpleName()+TAG_2,"onViewCreated");
     }
 
     @Override

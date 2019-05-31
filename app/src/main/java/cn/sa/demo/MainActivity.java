@@ -34,6 +34,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 这里复现，触发两次 $AppEnd
+//        startActivity(new Intent(this,FragmentActivity.class));
+//        String a = null;
+//        a.toString();
+
+    }
+
     private void initView() {
         findViewById(R.id.tv_main_track).setOnClickListener(this);
         findViewById(R.id.tv_main_profileSet).setOnClickListener(this);

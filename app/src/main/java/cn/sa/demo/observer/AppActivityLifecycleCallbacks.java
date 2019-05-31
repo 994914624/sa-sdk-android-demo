@@ -7,7 +7,8 @@ import android.util.Log;
 import android.view.ViewTreeObserver;
 import java.lang.ref.WeakReference;
 import cn.sa.demo.utils.ElementDisplayManager;
-import cn.sa.demo.utils_G.ElementDisplayManager2;
+import cn.sa.demo.utils.FragmentPageManager;
+//import cn.sa.demo.utils_G.ElementDisplayManager2;
 
 
 /**
@@ -35,52 +36,54 @@ public class AppActivityLifecycleCallbacks implements Application.ActivityLifecy
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        Log.i(TAG_ACTIVITY, "onActivityCreated");
+        Log.i(TAG_ACTIVITY, activity.getClass().getSimpleName()+": onActivityCreated");
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        Log.i(TAG_ACTIVITY, "onActivityStarted");
+        Log.i(TAG_ACTIVITY, activity.getClass().getSimpleName()+": onActivityStarted");
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        Log.i(TAG_ACTIVITY, "onActivityResumed");
+        Log.i(TAG_ACTIVITY, activity.getClass().getSimpleName()+": onActivityResumed");
         setResumeActivity(activity);
         // registerViewTreeObserver
         registerViewTreeObserver(activity);
-        // Display save
-        //
-        ElementDisplayManager.saveDisplayOnResume();
-        ElementDisplayManager2.saveImpOnResume();
+        // Display 曝光
+        //ElementDisplayManager.saveDisplayOnResume();
+        //ElementDisplayManager2.saveImpOnResume();
 
     }
 
 
     @Override
     public void onActivityPaused(Activity activity) {
-        Log.i(TAG_ACTIVITY, "onActivityPaused");
+        Log.i(TAG_ACTIVITY, activity.getClass().getSimpleName()+": onActivityPaused");
         setResumeActivity(null);
         // unRegisterViewTreeObserver
         unRegisterViewTreeObserver(activity);
         // Display clean
-        ElementDisplayManager.cleanDisplayOnPause();
-        ElementDisplayManager2.cleanImpOnPause();
+        //ElementDisplayManager.cleanDisplayOnPause();
+        //ElementDisplayManager2.cleanImpOnPause();
+
+        // Fragment 页面
+        FragmentPageManager.cleanFragmentPageCalcultorOnPause();
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-        Log.i(TAG_ACTIVITY, "onActivityStopped");
+        Log.i(TAG_ACTIVITY, activity.getClass().getSimpleName()+": onActivityStopped");
     }
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        Log.i(TAG_ACTIVITY, "onActivitySaveInstanceState");
+        Log.i(TAG_ACTIVITY, activity.getClass().getSimpleName()+": onActivitySaveInstanceState");
     }
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        Log.i(TAG_ACTIVITY, "onActivityDestroyed");
+        Log.i(TAG_ACTIVITY, activity.getClass().getSimpleName()+": onActivityDestroyed");
     }
 
     /**

@@ -77,7 +77,7 @@ public class ElementDisplayCalcultor {
         View view = mDecorViewRef.get();
         if (view instanceof ViewGroup) {//|| view.getWidth() == 0 || view.getHeight() == 0|| view.getVisibility() != VISIBLE||view.getWindowVisibility() == GONE
             if (view.getWindowVisibility() != GONE && view.getWidth() != 0 && view.getHeight() != 0 && view.getVisibility() == VISIBLE) {
-                Log.e(TAG,"traverseViewTree");
+                Log.e(TAG, "traverseViewTree");
                 traverseView(mDecorViewRef.get(), null);
             }
         }
@@ -88,7 +88,7 @@ public class ElementDisplayCalcultor {
      */
     private void traverseView(View view, ViewNodeEntity viewNodeEntity) {
         if (view instanceof ViewGroup && !(view instanceof Spinner)) {
-            Log.e(TAG,"traverseView: "+view.getClass().getSimpleName());
+            Log.e(TAG, "traverseView: " + view.getClass().getSimpleName());
             ViewGroup viewGroup = (ViewGroup) view;
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View childView = viewGroup.getChildAt(i);
@@ -117,12 +117,12 @@ public class ElementDisplayCalcultor {
         int position = index;
         if (ViewUtil.instanceOfViewPager(view)) {
             //ViewPgaer 会 destroyItem 导致 viewPath index 改变，这个搞一个固定值
-            position =666;
+            position = 666;
         } else if (view instanceof AdapterView) {
             position = ((AdapterView) view).getFirstVisiblePosition() + index;
         } else if (view.getParent() != null && (view.getParent() instanceof ViewGroup)) {
             ViewGroup parent = (ViewGroup) view.getParent();
-             if (ViewUtil.instanceOfRecyclerView(parent)) {
+            if (ViewUtil.instanceOfRecyclerView(parent)) {
                 int adapterPosition = ViewUtil.getChildAdapterPositionInRecyclerView(view, parent);
                 if (adapterPosition >= 0) {
                     position = adapterPosition;

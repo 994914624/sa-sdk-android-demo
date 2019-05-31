@@ -9,9 +9,9 @@ import android.text.TextUtils;
 
 import com.growingio.android.sdk.collection.Configuration;
 import com.growingio.android.sdk.collection.GrowingIO;
-import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
+//import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
+//import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
 
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -73,6 +73,7 @@ private boolean isFirstInstallation;
             JSONObject properties = new JSONObject();
             properties.put("app_name", getAppName(context));
             SensorsDataAPI.sharedInstance().registerSuperProperties(properties);
+
 
             // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
             List<SensorsDataAPI.AutoTrackEventType> eventTypeList = new ArrayList<>();

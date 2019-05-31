@@ -5,23 +5,16 @@ import android.graphics.Rect;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
-import cn.sa.demo.utils_G.WindowHelper;
-
-import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 /**
