@@ -50,8 +50,7 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.tv_click_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(ClickActivity.this, "方式1", Toast.LENGTH_SHORT).show();
-                //ElementDisplayManager2.saveAllWindowImpress(false);
+                Toast.makeText(ClickActivity.this, "方式1", Toast.LENGTH_SHORT).show();
             }
         });
     }

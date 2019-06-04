@@ -20,11 +20,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import cn.sa.demo.R;
 import cn.sa.demo.entity.ViewNodeEntity;
-import cn.sa.demo.utils_G.FrgUtil;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -94,7 +92,7 @@ public class FragmentPageCalcultor {
      */
     private void collectFrgs(View childView) {
         if (childView.getTag(R.id.fragment_root_view) != null) {
-            Fragment fragment = ((Fragment) childView.getTag(R.id.fragment_root_view));
+            Object fragment = childView.getTag(R.id.fragment_root_view);
             if (FrgUtil.isVisible(fragment)) {
                 int position = -1;
                 if (childView.getParent() != null && childView.getParent() instanceof ViewPager) {

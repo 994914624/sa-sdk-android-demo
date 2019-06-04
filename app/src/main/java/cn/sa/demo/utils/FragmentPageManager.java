@@ -2,6 +2,7 @@ package cn.sa.demo.utils;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
@@ -72,22 +73,23 @@ public class FragmentPageManager {
 
 
     /**
-     * 清除 cFragmentPageCalcultor 对象
+     * 清除 FragmentPageCalcultor 对象
      */
     private static void clearFragmentPageCalcultor() {
         mFragmentPageCalcultor.clear();
     }
 
-
+    private static final HandlerThread mFragmentPageHandlerThread = new HandlerThread("FragmentPageThread");
     private static final Object mHandlerLock = new Object();
-    private static Handler mUiThreadHandler = null;
-    private static Handler getUiThreadHandler() {
+    private static Handler mFragmentPageHandler = null;
+    private static Handler getFragmentPagHandler() {
         Handler handler;
         synchronized (mHandlerLock) {
-            if (mUiThreadHandler == null) {
-                mUiThreadHandler = new Handler(Looper.getMainLooper());
+            if (mFragmentPageHandler == null) {
+                mFragmentPageHandlerThread.start();
+                mFragmentPageHandler = new Handler(mFragmentPageHandlerThread.getLooper());
             }
-            handler = mUiThreadHandler;
+            handler = mFragmentPageHandler;
         }
         return handler;
     }
@@ -100,11 +102,11 @@ public class FragmentPageManager {
 
 
     /**
-     * ViewTreeObserver 时，延迟 250ms 保存 Display
+     * ViewTreeObserver 时，延迟 250ms 保存 Fragment
      */
     public static void saveFragmentPageOnViewTreeObserver() {
-        getUiThreadHandler().removeCallbacks(mFrgRunable);
-        getUiThreadHandler().postDelayed(mFrgRunable,250);
+        getFragmentPagHandler().removeCallbacks(mFrgRunable);
+        getFragmentPagHandler().postDelayed(mFrgRunable,250);
     }
 
 
@@ -114,7 +116,7 @@ public class FragmentPageManager {
     public static void cleanFragmentPageCalcultorOnPause() {
         Log.e(TAG,"cleanFragmentPageCalcultorOnPause:"+mTagPage);
         clearFragmentPageCalcultor();
-        getUiThreadHandler().removeCallbacks(mFrgRunable);
+        getFragmentPagHandler().removeCallbacks(mFrgRunable);
     }
 
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import cn.sa.demo.R;
 
 /**
@@ -20,6 +21,12 @@ public class BaseAppFragment extends Fragment {
         // Required empty public constructor
     }
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        view.setTag(R.id.fragment_root_view,this);
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

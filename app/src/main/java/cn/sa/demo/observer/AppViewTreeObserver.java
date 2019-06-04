@@ -9,7 +9,7 @@ import cn.sa.demo.utils.ElementDisplayManager;
 //import cn.sa.demo.utils_G.ElementDisplayManager2;
 //import cn.sa.demo.utils.ElementDisplayManager2;
 import cn.sa.demo.utils.FragmentPageManager;
-import cn.sa.demo.utils_G.FrgUtil;
+import cn.sa.demo.utils.FrgUtil;
 
 /**
  * Created by yzk on 2019/5/13
