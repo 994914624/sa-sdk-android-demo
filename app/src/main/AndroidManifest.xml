@@ -46,6 +46,7 @@
                 <data
                     android:host="visualized"
                     android:scheme="sa64b7c48f" />
+
             </intent-filter>
             <!-- gio -->
             <intent-filter>

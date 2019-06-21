@@ -6,16 +6,19 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.growingio.android.sdk.collection.Configuration;
 import com.growingio.android.sdk.collection.GrowingIO;
 //import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
+import com.growingio.android.sdk.deeplink.DeeplinkCallback;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 //import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
 
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.sa.demo.observer.AppActivityLifecycleCallbacks;
 
@@ -53,6 +56,14 @@ public class App extends Application {
                 .setTestMode(true)
                 .setTrackWebView(true)// 采集所有 WebView
                 .setHashTagEnable(true) // 采集 WebView 页面锚点（单页面）
+                .setDeeplinkCallback(new DeeplinkCallback() {
+                    @Override
+                    public void onReceive(Map<String, String> map, int i) {
+                        //if (i == DeeplinkCallback.SUCCESS) {
+                            Log.e(TAG, "-----> " + map.toString());
+                        //}
+                    }
+                })
 
 
         );
@@ -88,8 +99,10 @@ private boolean isFirstInstallation;
             SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
 
             // 开启 Fragment $AppViewScreen
-            SensorsDataAPI.sharedInstance().trackFragmentAppViewScreen();
+            //SensorsDataAPI.sharedInstance().trackFragmentAppViewScreen();
 
+            //初始化 SDK 之后，开启可视化全埋点, 在采集 $AppClick 事件时会记录 View 的 ViewPath
+            //SensorsDataAPI.sharedInstance().enableVisualizedAutoTrack();
             // 开启调试日志
             SensorsDataAPI.sharedInstance().enableLog(isDebugMode);
 

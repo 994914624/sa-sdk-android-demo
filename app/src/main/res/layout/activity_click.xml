@@ -126,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:text="方式5(Lambda)" />
+                    android:text="方式5(Lambda 1 )" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -211,6 +211,27 @@
                     android:layout_height="50dp"
                     android:gravity="center"
                     android:text="方式9(Kotlin)" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="2dp">
+
+                <TextView
+                    android:id="@+id/tv_click_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="方式10(Lambda 2 )" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

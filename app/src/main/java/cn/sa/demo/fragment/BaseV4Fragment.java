@@ -30,7 +30,6 @@ public class BaseV4Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i(TAG+getClass().getSimpleName()+TAG_2,"onCreateView @");
         return inflater.inflate(R.layout.fragment_base_supportv4, container, false);
     }
 

@@ -7,13 +7,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.jakewharton.rxbinding.view.RxView;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-import com.sensorsdata.analytics.android.sdk.SensorsDataTrackViewOnClick;
+//import com.sensorsdata.analytics.android.sdk.SensorsDataTrackViewOnClick;
 import java.util.concurrent.TimeUnit;
 import androidx.databinding.DataBindingUtil;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.sa.demo.R;
+import cn.sa.demo.custom.Test2;
 import cn.sa.demo.databinding.ActivityClickBinding;
 import cn.sa.demo.entity.BindingEntity;
 import rx.functions.Action1;
@@ -41,6 +42,7 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
         type7();
         type8();
         type9();
+        type10();
     }
 
     /**
@@ -86,7 +88,7 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
      * 4. XML 中 OnClick 方式。
      * 属性名字对应为方法名
      */
-    @SensorsDataTrackViewOnClick
+    //@SensorsDataTrackViewOnClick
     public void type4(View v) {
         Toast.makeText(this, "方式4(OnClick)", Toast.LENGTH_SHORT).show();
     }
@@ -95,7 +97,7 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
      * 5. lambda 方式。
      */
     private void type5() {
-        findViewById(R.id.tv_click_5).setOnClickListener(v -> Toast.makeText(ClickActivity.this, "方式5(Lambda)", Toast.LENGTH_SHORT).show());
+        findViewById(R.id.tv_click_5).setOnClickListener(v -> Toast.makeText(ClickActivity.this, "方式5(Lambda 1)", Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -149,7 +151,7 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
      */
     private void type9() {
         TextView textView = findViewById(R.id.tv_click_9);
-        SensorsDataAPI.sharedInstance().ignoreView(textView);
+        //SensorsDataAPI.sharedInstance().ignoreView(textView);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +159,20 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
             }
         });
     }
+
+    /**
+     * 10. lambda 2 方法引用方式。
+     */
+    private void type10() {
+        findViewById(R.id.tv_click_10).setOnClickListener(new Test2():: click);
+    }
+
+    class Test {
+        public void click(View view) {
+            Toast.makeText(ClickActivity.this, "方式10(lambda 2::onClick)", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     protected void onDestroy() {

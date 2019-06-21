@@ -1,6 +1,8 @@
 package cn.sa.demo.activity;
 
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,8 +42,17 @@ public class WebViewActivity extends BaseActivity {
         viewGroup.addView(webView);
         // TODO 打通 App 和 H5
         // 打通 App 和 H5，enableVerify 指定为 true 开启数据接收地址 URL 安全校验
-        SensorsDataAPI.sharedInstance().showUpWebView(webView,false,true);
+        SensorsDataAPI.sharedInstance().showUpWebView(webView,false,false);
         webView.loadUrl("file:///android_asset/index.html");// 这里使用一个本地 html 来模拟验证 App 和 H5打通
+        int a = (int) (1000 *  Math.random());
+
+        // 我们这边需要调试一下你们 App 内的 H5 页面，麻烦你们 Android 开发同事，在 WebView 的地方调用下面代码，打一个 Debug apk 包发过来，谢谢。
+        // 允许 chrome://inspect 调试
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+
+        //webView.loadUrl("https://res.cc.cmbimg.com/fsp/File/G20190507G932423347G31312D31332D5C385C385C.DAT?yy="+a);
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {

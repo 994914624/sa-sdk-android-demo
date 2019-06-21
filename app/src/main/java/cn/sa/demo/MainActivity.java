@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             properties.put("IsAddedToFav", false);                  // 是否被添加到收藏夹
             // 埋点触发 "ViewProduct" 事件
             SensorsDataAPI.sharedInstance().track("ViewProduct", properties);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

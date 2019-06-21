@@ -51,8 +51,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     //添加 Sensors Analytics SDK 依赖
-    implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.0.1'
-    //implementation(name: 'SensorsAnalyticsSDK-release', ext: 'aar')
+    implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.1.5'
+    //implementation(name: 'sensor-1.10.11', ext: 'aar')
 
     // butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -63,7 +63,11 @@ dependencies {
     //gio
     //compile 'com.growingio.android:vds-android-agent:1.1.9@aar'
     //GrowingIO 无埋点 SDK
-    implementation 'com.growingio.android:vds-android-agent:autotrack-2.7.5@aar'
+    implementation 'com.growingio.android:vds-android-agent:autotrack-2.7.6@aar'
+    //debug-db
+    debugImplementation('com.amitshekhar.android:debug-db:1.0.3') {
+        exclude group: 'com.android.support'
+    }
 }
 
 repositories {
