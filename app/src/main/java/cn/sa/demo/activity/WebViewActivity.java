@@ -2,6 +2,7 @@ package cn.sa.demo.activity;
 
 
 import android.annotation.TargetApi;
+
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
@@ -15,6 +16,7 @@ import android.webkit.WebViewClient;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
 import cn.sa.demo.R;
+import cn.sa.demo.custom.MyWebView;
 
 /**
  * 打通 App 和 H5
@@ -37,13 +39,25 @@ public class WebViewActivity extends BaseActivity {
      */
     private WebView webView = null;
     private void initWebView() {
-        webView = new WebView(this);
+        webView = new MyWebView(this);
         ViewGroup viewGroup = findViewById(R.id.webview);
         viewGroup.addView(webView);
         // TODO 打通 App 和 H5
         // 打通 App 和 H5，enableVerify 指定为 true 开启数据接收地址 URL 安全校验
-        SensorsDataAPI.sharedInstance().showUpWebView(webView,false,false);
-        webView.loadUrl("file:///android_asset/index.html");// 这里使用一个本地 html 来模拟验证 App 和 H5打通
+        //SensorsDataAPI.sharedInstance().showUpWebView(webView,false,false);
+
+        // 反射调用 showUpWebView
+        try {
+            Class<?> clazz = Class.forName("com.sensorsdata.analytics.android.sdk.SensorsDataAPI");
+            java.lang.reflect.Method sharedInstance = clazz.getMethod("sharedInstance");
+            java.lang.reflect.Method showUpWebView = clazz.getMethod("showUpWebView", android.webkit.WebView.class, boolean.class,boolean.class);
+            Object sdkInstance = sharedInstance.invoke(null);
+            showUpWebView.invoke(sdkInstance,webView,false,true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        webView.loadUrl("file:///android_asset/h5.html");// 这里使用一个本地 html 来模拟验证 App 和 H5打通
         int a = (int) (1000 *  Math.random());
 
         // 我们这边需要调试一下你们 App 内的 H5 页面，麻烦你们 Android 开发同事，在 WebView 的地方调用下面代码，打一个 Debug apk 包发过来，谢谢。
@@ -86,7 +100,8 @@ public class WebViewActivity extends BaseActivity {
     /**
      * 注入 JavaScript SDK
      */
-    private final static String INJECT_JS_SDK_CODE ="(function(para) {\n" +
+    private final static String INJECT_JS_SDK_CODE =
+            "(function(para) {\n" +
             "  var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script',x = null,y = null;\n" +
             "  if(typeof(w['sensorsDataAnalytic201505']) !== 'undefined') {\n" +
             "      return false;\n" +

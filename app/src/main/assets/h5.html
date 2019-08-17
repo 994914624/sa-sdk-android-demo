@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,user-scalable=no">
+		<title>JS识别判断Android/IOS设备实现跳转不同的下载地址</title>
+		<style type="text/css">
+			a{ text-decoration: none;}
+			img{ display: block; margin: 0 auto; width: 100%; border: 0;}
+			.btn{ width: 100%; position: fixed; bottom: 0; min-width: 320px;  background: #fefefe;  padding: 12px 0;
+				  color: #fff; text-align: center; line-height: 45px; border-radius: 3px; border-top: 1px solid #dcdcdc;
+			}
+			.btn a{ height: 45px; background:#25cffb ; color: #fff; display: block; width: 90%; margin: 0 auto; font-size: 18px; font-weight: bold;}
+		</style>
+
+		<script>
+(function(para) {
+  var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script',x = null,y = null;
+  w['sensorsDataAnalytic201505'] = n;
+  w[n] = w[n] || function(a) {return function() {(w[n]._q = w[n]._q || []).push([a, arguments]);}};
+  var ifs = ['track','quick','register','registerPage','registerOnce','trackSignup', 'trackAbtest', 'setProfile','setOnceProfile','appendProfile', 'incrementProfile', 'deleteProfile', 'unsetProfile', 'identify','login','logout','trackLink','clearAllRegister','getAppStatus'];
+  for (var i = 0; i < ifs.length; i++) {
+    w[n][ifs[i]] = w[n].call(null, ifs[i]);
+  }
+  if (!w[n]._t) {
+    x = d.createElement(s), y = d.getElementsByTagName(s)[0];
+    x.async = 1;
+    x.src = p;
+    x.setAttribute('charset','UTF-8');
+    y.parentNode.insertBefore(x, y);
+    w[n].para = para;
+  }
+})({
+  sdk_url: 'http://static.sensorsdata.cn/sdk/1.10.9/sensorsdata.min.js',
+  heatmap_url: 'http://static.sensorsdata.cn/sdk/1.10.9/heatmap.min.js',
+  name: 'sensors',
+  // 打通 App 和 H5
+  use_app_track:true,
+  server_url: 'http://sdk-test.datasink.sensorsdata.cn/sa?token=95c73ae661f85aa0&project=yangzhankun',
+  heatmap:{}
+});
+sensors.quick('autoTrack');
+</script>
+
+	</head>
+	<body>
+		<a href="javascript:void(0)" onclick="jump()">
+			<!-- 软件截图/海报地址 -->
+			<img src="https://www.baidu.com/img/bd_logo1.png?qua=high" />
+		</a>
+		<div class="btn">
+			<a  href="javascript:void(0)" onclick="jump()">
+				立即下载
+			</a>
+		</div>
+		<script src="jquery-1.9.1.min.js"></script>
+		<script type="text/javascript">
+		function jump(){
+			var u = navigator.userAgent, app = navigator.appVersion;
+			var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+			var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+			if(isAndroid==1){
+				// 替换安卓下载地址
+                alert('Android');
+				window.location.href="https://sj.qq.com/myapp/detail.htm?apkName=com.sensorsdata.analytics.android.app"
+			} else {
+				// 替换苹果ios的下载地址
+                alert('iOS');
+				window.location.href="https://apps.apple.com/cn/app/id1281806378"
+			};
+		}
+		</script>
+	</body>
+</html>

@@ -11,10 +11,13 @@ import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
 import static android.view.View.VISIBLE;
 
 /**
@@ -93,7 +96,7 @@ public class ViewUtil {
         }
 
         if (TextUtils.isEmpty(value)) {
-           if (view.getContentDescription() != null) {
+            if (view.getContentDescription() != null) {
                 value = view.getContentDescription().toString();
             }
         }
@@ -103,10 +106,9 @@ public class ViewUtil {
     /**
      * View 自身是否可见
      *
-     * @return
-     *         View 宽、高、透明度 有一个 < 0 时，或 getLocalVisibleRect 为 false 时；返回 false 。
-     *         View getVisibility 不可见，且有 Animation getFillAfter 为  false 时；返回 false 。
-     *         View 无 Animation 时 getVisibility 不可见时返回 false 。
+     * @return View 宽、高、透明度 有一个 < 0 时，或 getLocalVisibleRect 为 false 时；返回 false 。
+     * View getVisibility 不可见，且有 Animation getFillAfter 为  false 时；返回 false 。
+     * View 无 Animation 时 getVisibility 不可见时返回 false 。
      */
     @RequiresApi(api = 11)
     public static boolean isViewSelfVisible(View view) {

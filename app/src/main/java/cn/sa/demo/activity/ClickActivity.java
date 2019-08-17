@@ -3,6 +3,7 @@ package cn.sa.demo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.jakewharton.rxbinding.view.RxView;
@@ -13,10 +14,12 @@ import androidx.databinding.DataBindingUtil;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import butterknife.internal.DebouncingOnClickListener;
 import cn.sa.demo.R;
 import cn.sa.demo.custom.Test2;
 import cn.sa.demo.databinding.ActivityClickBinding;
 import cn.sa.demo.entity.BindingEntity;
+import cn.sa.demo.utils.AccessibilityUtil;
 import rx.functions.Action1;
 
 public class ClickActivity extends BaseActivity implements View.OnClickListener {
@@ -52,7 +55,19 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.tv_click_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ClickActivity.this, "方式1", Toast.LENGTH_SHORT).show();
+                Toast  toast = Toast.makeText(ClickActivity.this, "方式1 Toast", Toast.LENGTH_SHORT);
+                toast.show();
+
+            }
+        });
+
+        findViewById(R.id.tv_click_1).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // 长按 发出无障碍事件
+                Toast.makeText(ClickActivity.this, "发出无障碍事件，点击当前页面的控件", Toast.LENGTH_SHORT).show();
+                AccessibilityUtil.sendAccessibilityEvent(ClickActivity.this);
+                return false;
             }
         });
     }

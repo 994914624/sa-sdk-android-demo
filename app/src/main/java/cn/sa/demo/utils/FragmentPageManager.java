@@ -17,7 +17,6 @@ import cn.sa.demo.observer.AppActivityLifecycleCallbacks;
 
 /**
  * Created by yzk on 2019/5/31
- *
  */
 
 
@@ -27,7 +26,7 @@ public class FragmentPageManager {
     private static String mTagPage;
     private static volatile FragmentPageManager instance;
     // 缓存每个页面的 FragmentPageCalcultor
-    private static Map<WeakReference<View>, FragmentPageCalcultor> mFragmentPageCalcultor = new LinkedHashMap();
+    private static Map<WeakReference<View>, FragmentPageCalcultor> mFragmentPageCalcultor = new LinkedHashMap<WeakReference<View>, FragmentPageCalcultor>();
 
     private static FragmentPageManager getInstance() {
         if (instance == null) {
@@ -67,7 +66,7 @@ public class FragmentPageManager {
             }
         }
         FragmentPageCalcultor fragmentPageCalcultor = new FragmentPageCalcultor(root, activity.getClass().getSimpleName(), System.currentTimeMillis());
-        mFragmentPageCalcultor.put(new WeakReference(root), fragmentPageCalcultor);
+        mFragmentPageCalcultor.put(new WeakReference<View>(root), fragmentPageCalcultor);
         return fragmentPageCalcultor;
     }
 
@@ -82,6 +81,7 @@ public class FragmentPageManager {
     private static final HandlerThread mFragmentPageHandlerThread = new HandlerThread("FragmentPageThread");
     private static final Object mHandlerLock = new Object();
     private static Handler mFragmentPageHandler = null;
+
     private static Handler getFragmentPagHandler() {
         Handler handler;
         synchronized (mHandlerLock) {
@@ -106,7 +106,7 @@ public class FragmentPageManager {
      */
     public static void saveFragmentPageOnViewTreeObserver() {
         getFragmentPagHandler().removeCallbacks(mFrgRunable);
-        getFragmentPagHandler().postDelayed(mFrgRunable,250);
+        getFragmentPagHandler().postDelayed(mFrgRunable, 250);
     }
 
 
@@ -114,7 +114,7 @@ public class FragmentPageManager {
      * onPause 时 clear Calcultor
      */
     public static void cleanFragmentPageCalcultorOnPause() {
-        Log.e(TAG,"cleanFragmentPageCalcultorOnPause:"+mTagPage);
+        Log.e(TAG, "cleanFragmentPageCalcultorOnPause:" + mTagPage);
         clearFragmentPageCalcultor();
         getFragmentPagHandler().removeCallbacks(mFrgRunable);
     }

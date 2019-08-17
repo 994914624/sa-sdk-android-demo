@@ -1,29 +1,29 @@
 package cn.sa.demo;
 
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.Settings;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.sa.demo.activity.ClickActivity;
 import cn.sa.demo.activity.FragmentActivity;
 import cn.sa.demo.activity.ViewActivity;
 import cn.sa.demo.activity.WebViewActivity;
+import cn.sa.demo.utils.AccessibilityUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     final static String TAG = "SADemo.MainActivity";
+    private TextView tvAssessibility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +35,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 第一次正常启动，中间出现过 crash ，之后 App 又正常了
+        // WebView 页，闪屏页，Main。
+//        startActivity(new Intent(MainActivity.this, FragmentActivity.class));
+//        finish();
+
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // 这里复现，触发两次 $AppEnd
-//        startActivity(new Intent(this,FragmentActivity.class));
-//        String a = null;
-//        a.toString();
-
+        String assessibilityStatus = "(已关闭)";
+        if(AccessibilityUtil.isAccessibilityServiceRunning(getApplicationContext())){
+            assessibilityStatus ="(已开启)";
+        }
+        tvAssessibility.setText(String.format("无障碍：%s", assessibilityStatus));
     }
 
     private void initView() {
@@ -54,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.tv_main_clickType).setOnClickListener(this);
         findViewById(R.id.tv_main_fragment).setOnClickListener(this);
         findViewById(R.id.tv_main_appH5).setOnClickListener(this);
+        tvAssessibility = findViewById(R.id.tv_main_assessibility);
+        tvAssessibility.setOnClickListener(this);
     }
 
 
@@ -69,8 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             properties.put("ProductID", 123456);                    // 设置商品ID
             properties.put("ProductCatalog", "Laptop Computer");    // 设置商品类别
             properties.put("IsAddedToFav", false);                  // 是否被添加到收藏夹
+            // 数据发送到另一个项目
+            properties.put("$project","YangYang")
+                    .put("$token","95c73ae661f85aa0");
             // 埋点触发 "ViewProduct" 事件
-            SensorsDataAPI.sharedInstance().track("ViewProduct", properties);
+          //  SensorsDataAPI.sharedInstance().trackWithProject("ViewProduct", properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,7 +108,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+//        int radom = (int) (Math.random()*1000);
+//        SensorsDataAPI.sharedInstance().identify("匿名 @:"+radom);
     }
 
     /**
@@ -104,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void login() {
         Toast.makeText(MainActivity.this, "注册成功/登录成功", Toast.LENGTH_SHORT).show();
         // TODO 注册成功/登录成功 时，调用 login 传入登录ID
-        SensorsDataAPI.sharedInstance().login("你们服务端分配给用户的具体的登录ID");
+        int radom = (int) (Math.random()*1000);
+        SensorsDataAPI.sharedInstance().login("登录 @:"+radom);
 
     }
 
@@ -169,6 +185,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.tv_main_appH5:
                 openWebViewActivity();//打通 App 与 H5
                 break;
+            case R.id.tv_main_assessibility:
+                openAccessibilityServiceSettings();//打开无障碍
+                break;
             default:
                 break;
         }
@@ -203,5 +222,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void openWebViewActivity() {
         startActivity(new Intent(MainActivity.this, WebViewActivity.class));
+    }
+
+    /**
+     * 打开无障碍
+     */
+    public  void openAccessibilityServiceSettings() {
+        try {
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

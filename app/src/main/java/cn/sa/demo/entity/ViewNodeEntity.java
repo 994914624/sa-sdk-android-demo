@@ -6,6 +6,15 @@ package cn.sa.demo.entity;
 
 public class ViewNodeEntity {
     private String viewPath;
+
+    public String getViewContent() {
+        return viewContent;
+    }
+
+    public String getViewPage() {
+        return viewPage;
+    }
+
     private String viewContent;
     private int viewPosition;
     private String viewPage;

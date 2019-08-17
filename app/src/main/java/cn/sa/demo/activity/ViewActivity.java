@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.tabs.TabLayout;
@@ -17,8 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,6 +30,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -55,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.sa.demo.R;
+import cn.sa.demo.utils.AccessibilityUtil;
 
 /**
  * 常用控件的点击
@@ -74,9 +79,19 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
-        initEditText();
         // Button
         findViewById(R.id.view_btn).setOnClickListener(this);
+        findViewById(R.id.view_btn).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // 长按 发出无障碍事件
+                Toast.makeText(ViewActivity.this, "发出无障碍事件，点击当前页面的控件", Toast.LENGTH_SHORT).show();
+                AccessibilityUtil.sendAccessibilityEvent(ViewActivity.this);
+                return false;
+            }
+        });
+        //EditText
+        initEditText();
         // TextView
         findViewById(R.id.view_tv).setOnClickListener(this);
         // ImageView
@@ -124,6 +139,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     }
 
     EditText mEditText = null;
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initEditText() {
          mEditText = findViewById(R.id.view_edt);
         mEditText.setOnTouchListener(new View.OnTouchListener() {
@@ -137,9 +153,6 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-//                    editText.clearFocus();
-//                    InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    im.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     return true;
                 }
 
@@ -156,6 +169,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         //追踪 EditText
         //GrowingIO.getInstance().trackEditText(mEditText);
         //mEditText.setTag(AbstractGrowingIO.GROWING_TRACK_TEXT, Boolean.valueOf(true));
+        mEditText.setShowSoftInputOnFocus(false);//屏蔽软键盘
     }
 
     /*
@@ -348,6 +362,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     /*
      * Dialog
      */
+    Dialog dialog1 = null;
     private void showDialog() {
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(ViewActivity.this);
@@ -370,12 +385,14 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
                     }
                 });
         // 显示
-        normalDialog.show().setOwnerActivity(ViewActivity.this);
+        dialog1 =normalDialog.show();
+        dialog1.setOwnerActivity(ViewActivity.this);
     }
 
     /*
      * Dialog2
      */
+    Dialog dialog2 = null;
     private void showDialog2() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewActivity.this);  //先得到构造器
         //builder.create().setOwnerActivity(this);
@@ -404,8 +421,8 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
                 Toast.makeText(ViewActivity.this, "忽略" + which, Toast.LENGTH_SHORT).show();
             }
         });
-        Dialog dia = builder.create();
-        dia.show();
+        dialog2 = builder.create();
+        dialog2.show();
     }
 
     /**
@@ -803,5 +820,16 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Toast.makeText(ViewActivity.this, "点击", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(dialog1!= null){
+            dialog1.dismiss();
+        }
+        if(dialog2!= null){
+            dialog2.dismiss();
+        }
     }
 }

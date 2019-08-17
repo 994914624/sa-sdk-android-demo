@@ -12,10 +12,13 @@ import com.growingio.android.sdk.collection.Configuration;
 import com.growingio.android.sdk.collection.GrowingIO;
 //import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.growingio.android.sdk.deeplink.DeeplinkCallback;
+import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 //import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
 
 import org.json.JSONObject;
+
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +40,16 @@ public class App extends Application {
     final static String SA_SERVER_URL_RELEASE = "【正式项目】数据接收地址";
 
     private boolean isDebugMode;
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this.getApplicationContext();
         // 在 Application 的 onCreate 初始化 SDK
         initSensorsDataSDK(this);
         initGIO();
@@ -64,11 +73,9 @@ public class App extends Application {
                         //}
                     }
                 })
-
-
         );
     }
-private boolean isFirstInstallation;
+
     /**
      * 初始化 SDK 、设置公共属性、开启自动采集
      */
@@ -76,14 +83,16 @@ private boolean isFirstInstallation;
         try {
 
             isDebugMode = isDebugMode(this);
-            isFirstInstallation = isDebugMode;
+
             // 初始化神策 SDK
-            //SensorsDataAPI.sharedInstance(this,new SAConfigOptions(isDebugMode?SA_SERVER_URL_DEBUG:SA_SERVER_URL_RELEASE));
-            SensorsDataAPI.sharedInstance(this,SA_SERVER_URL_DEBUG, SensorsDataAPI.DebugMode.DEBUG_AND_TRACK);
+            SensorsDataAPI.sharedInstance(this,new SAConfigOptions(SA_SERVER_URL_DEBUG).enableMultiProcess(true));
+          //  SensorsDataAPI.sharedInstance(this,SA_SERVER_URL_DEBUG, SensorsDataAPI.DebugMode.DEBUG_OFF);
             // 初始化SDK后，获取应用名称设置为公共属性
+
             JSONObject properties = new JSONObject();
             properties.put("app_name", getAppName(context));
             SensorsDataAPI.sharedInstance().registerSuperProperties(properties);
+            SensorsDataAPI.sharedInstance().getDistinctId();
 
 
             // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
@@ -99,12 +108,12 @@ private boolean isFirstInstallation;
             SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
 
             // 开启 Fragment $AppViewScreen
-            //SensorsDataAPI.sharedInstance().trackFragmentAppViewScreen();
+            SensorsDataAPI.sharedInstance().trackFragmentAppViewScreen();
 
             //初始化 SDK 之后，开启可视化全埋点, 在采集 $AppClick 事件时会记录 View 的 ViewPath
             //SensorsDataAPI.sharedInstance().enableVisualizedAutoTrack();
             // 开启调试日志
-            SensorsDataAPI.sharedInstance().enableLog(isDebugMode);
+            SensorsDataAPI.sharedInstance().enableLog(true);
 
         } catch (Exception e) {
             e.printStackTrace();

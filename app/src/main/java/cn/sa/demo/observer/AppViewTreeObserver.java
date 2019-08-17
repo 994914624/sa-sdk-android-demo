@@ -49,11 +49,10 @@ public class AppViewTreeObserver implements android.view.ViewTreeObserver.OnGlob
 //            Log.i("nice Frg_5 --->", ""+ FrgUtil.isVisible(Frg_2.getFragmentPagerAdapter().getItem(1)));
 //            Log.i("nice Frg_6 --->", ""+ FrgUtil.isVisible(Frg_2.getFragmentPagerAdapter().getItem(2)));
 //        }
-        // Display 曝光
-        //ElementDisplayManager.saveDisplayOnViewTreeObserver();
-        //ElementDisplayManager2.saveImpOnViewTreeObserver();
 
-        // Fragment 页面
+        // Display 曝光
+        ElementDisplayManager.saveDisplayOnViewTreeObserver();
+        // Fragment 浏览页面
         FragmentPageManager.saveFragmentPageOnViewTreeObserver();
     }
 
@@ -61,7 +60,6 @@ public class AppViewTreeObserver implements android.view.ViewTreeObserver.OnGlob
     public void onScrollChanged() {
         Log.i(TAG_VTO, "onScrollChanged");
         // Display 曝光
-        //ElementDisplayManager.saveDisplayOnViewTreeObserver();
-        //ElementDisplayManager2.saveImpOnViewTreeObserver();
+        ElementDisplayManager.saveDisplayOnViewTreeObserver();
     }
 }

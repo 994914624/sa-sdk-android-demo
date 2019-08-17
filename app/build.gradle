@@ -8,6 +8,16 @@ apply plugin: 'kotlin-android-extensions'
 //gio
 apply plugin: 'com.growingio.android'
 
+
+sensorsAnalytics {
+//    check {
+//        //类名-方法名-方法描述，类的包名之间用/分割，（）里面是参数类型，Z是返回值类型
+//        //methodCheckSet = ['android/text/TextUtils-isEmpty-(Ljava/lang/CharSequence;)Z']
+//    }
+
+    debug = true
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -51,8 +61,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     //添加 Sensors Analytics SDK 依赖
-    implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.1.5'
+    //implementation 'com.sensorsdata.analytics.android:TestSDK:3.2.0.debug7'
+    //implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.1.2'
     //implementation(name: 'sensor-1.10.11', ext: 'aar')
+    api(name: 'SensorsAnalyticsSDK-3.2.1', ext: 'aar')
 
     // butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -68,6 +80,8 @@ dependencies {
     debugImplementation('com.amitshekhar.android:debug-db:1.0.3') {
         exclude group: 'com.android.support'
     }
+    //pinyin4j 2.5.0 有问题，2.5.1 可以
+    //implementation 'com.belerweb:pinyin4j:2.5.0'
 }
 
 repositories {

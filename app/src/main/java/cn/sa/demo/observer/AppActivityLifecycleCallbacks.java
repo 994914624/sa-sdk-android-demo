@@ -52,7 +52,6 @@ public class AppActivityLifecycleCallbacks implements Application.ActivityLifecy
         registerViewTreeObserver(activity);
         // Display 曝光
         //ElementDisplayManager.saveDisplayOnResume();
-        //ElementDisplayManager2.saveImpOnResume();
 
     }
 
@@ -64,10 +63,8 @@ public class AppActivityLifecycleCallbacks implements Application.ActivityLifecy
         // unRegisterViewTreeObserver
         unRegisterViewTreeObserver(activity);
         // Display clean
-        //ElementDisplayManager.cleanDisplayOnPause();
-        //ElementDisplayManager2.cleanImpOnPause();
-
-        // Fragment 页面
+        ElementDisplayManager.cleanDisplayOnPause();
+        // Fragment clean
         FragmentPageManager.cleanFragmentPageCalcultorOnPause();
     }
 

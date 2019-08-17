@@ -10,6 +10,9 @@ buildscript {
         }
         google()
         jcenter()
+        maven {
+            url 'https://dl.bintray.com/yyzhankun/maven'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
@@ -17,7 +20,8 @@ buildscript {
         // in the individual module build.gradle files
 
         //添加 Sensors Analytics android-gradle-plugin 依赖
-        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.0.6'
+        //classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.1.1'
+        classpath 'com.sensorsdata.analytics.android:Testplugin2:3.0.3'
         // butterknife
         classpath 'com.jakewharton:butterknife-gradle-plugin:10.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -35,6 +39,9 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://dl.bintray.com/yyzhankun/maven'
+        }
     }
 }
 

@@ -15,6 +15,13 @@ public class FragmentActivity extends BaseActivity implements View.OnClickListen
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        startActivity(new Intent(FragmentActivity.this, ClickActivity.class));
+//        finish();
+    }
+
     private void initView() {
         // v4
         findViewById(R.id.tv_frg_v4_viewpager).setOnClickListener(this);
