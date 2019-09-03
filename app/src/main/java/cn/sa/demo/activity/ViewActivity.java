@@ -759,7 +759,7 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private void initRecycleView() {
-        mLayoutManager = new LinearLayoutManager(ViewActivity.this, LinearLayoutManager.VERTICAL, false);
+        mLayoutManager = new LinearLayoutManager(ViewActivity.this, RecyclerView.VERTICAL, false);
         ArrayList<String> data = new ArrayList<>();
         data.add("RecyclerView item1");
         data.add("RecyclerView item2");

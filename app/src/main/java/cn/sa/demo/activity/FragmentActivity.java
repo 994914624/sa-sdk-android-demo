@@ -2,6 +2,7 @@ package cn.sa.demo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import cn.sa.demo.R;
 
@@ -20,6 +21,7 @@ public class FragmentActivity extends BaseActivity implements View.OnClickListen
         super.onStart();
 //        startActivity(new Intent(FragmentActivity.this, ClickActivity.class));
 //        finish();
+
     }
 
     private void initView() {

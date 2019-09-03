@@ -7,7 +7,10 @@ import android.webkit.JavascriptInterface;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
 
@@ -15,11 +18,25 @@ import java.util.zip.GZIPInputStream;
  * Created by yzk on 2019/6/20
  */
 
-public class Test2 {
+public class Main {
 
 
     public static void main(String[] args) {
-        decodeData(DD);
+        //decodeData(DD);
+
+        System.out.println("1111: "+UUID.nameUUIDFromBytes("".getBytes()));
+        System.out.println("2222: "+UUID.nameUUIDFromBytes("".getBytes()));
+
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            byte[] md5Bytes = md.digest("".getBytes());
+            System.out.println("3333: "+new String(md5Bytes));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

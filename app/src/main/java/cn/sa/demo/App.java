@@ -14,8 +14,10 @@ import com.growingio.android.sdk.collection.GrowingIO;
 import com.growingio.android.sdk.deeplink.DeeplinkCallback;
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
+import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties;
 //import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -34,7 +36,7 @@ public class App extends Application {
      */
 
     // debug 模式的数据接收地址 （测试，测试项目）
-    final static String SA_SERVER_URL_DEBUG = "http://sdk-test.datasink.sensorsdata.cn/sa?project=yangzhankun&token=95c73ae661f85aa0";
+    final static String SA_SERVER_URL_DEBUG = "https://sdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=21f2e56df73988c7";
 
     // release 模式的数据接收地址（发版，正式项目）
     final static String SA_SERVER_URL_RELEASE = "【正式项目】数据接收地址";
@@ -92,8 +94,6 @@ public class App extends Application {
             JSONObject properties = new JSONObject();
             properties.put("app_name", getAppName(context));
             SensorsDataAPI.sharedInstance().registerSuperProperties(properties);
-            SensorsDataAPI.sharedInstance().getDistinctId();
-
 
             // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
             List<SensorsDataAPI.AutoTrackEventType> eventTypeList = new ArrayList<>();
@@ -112,6 +112,8 @@ public class App extends Application {
 
             //初始化 SDK 之后，开启可视化全埋点, 在采集 $AppClick 事件时会记录 View 的 ViewPath
             //SensorsDataAPI.sharedInstance().enableVisualizedAutoTrack();
+            // crash 采集
+            SensorsDataAPI.sharedInstance().trackAppCrash();
             // 开启调试日志
             SensorsDataAPI.sharedInstance().enableLog(true);
 

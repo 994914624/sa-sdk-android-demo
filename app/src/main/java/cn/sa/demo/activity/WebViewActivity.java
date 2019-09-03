@@ -1,12 +1,7 @@
 package cn.sa.demo.activity;
 
-
-import android.annotation.TargetApi;
-
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -38,6 +33,7 @@ public class WebViewActivity extends BaseActivity {
      * 打通 App 和 H5 文档：https://www.sensorsdata.cn/manual/app_h5.html
      */
     private WebView webView = null;
+
     private void initWebView() {
         webView = new MyWebView(this);
         ViewGroup viewGroup = findViewById(R.id.webview);
@@ -50,30 +46,30 @@ public class WebViewActivity extends BaseActivity {
         try {
             Class<?> clazz = Class.forName("com.sensorsdata.analytics.android.sdk.SensorsDataAPI");
             java.lang.reflect.Method sharedInstance = clazz.getMethod("sharedInstance");
-            java.lang.reflect.Method showUpWebView = clazz.getMethod("showUpWebView", android.webkit.WebView.class, boolean.class,boolean.class);
+            java.lang.reflect.Method showUpWebView = clazz.getMethod("showUpWebView", android.webkit.WebView.class, boolean.class, boolean.class);
             Object sdkInstance = sharedInstance.invoke(null);
-            showUpWebView.invoke(sdkInstance,webView,false,true);
+            showUpWebView.invoke(sdkInstance, webView, false, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         webView.loadUrl("file:///android_asset/h5.html");// 这里使用一个本地 html 来模拟验证 App 和 H5打通
-        int a = (int) (1000 *  Math.random());
+        int a = (int) (1000 * Math.random());
 
         // 我们这边需要调试一下你们 App 内的 H5 页面，麻烦你们 Android 开发同事，在 WebView 的地方调用下面代码，打一个 Debug apk 包发过来，谢谢。
         // 允许 chrome://inspect 调试
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
 
         //webView.loadUrl("https://res.cc.cmbimg.com/fsp/File/G20190507G932423347G31312D31332D5C385C385C.DAT?yy="+a);
-        webView.setWebChromeClient(new WebChromeClient(){
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 return false;
             }
         });
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -102,32 +98,32 @@ public class WebViewActivity extends BaseActivity {
      */
     private final static String INJECT_JS_SDK_CODE =
             "(function(para) {\n" +
-            "  var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script',x = null,y = null;\n" +
-            "  if(typeof(w['sensorsDataAnalytic201505']) !== 'undefined') {\n" +
-            "      return false;\n" +
-            "  }\n" +
-            "  w['sensorsDataAnalytic201505'] = n;\n" +
-            "  w[n] = w[n] || function(a) {return function() {(w[n]._q = w[n]._q || []).push([a, arguments]);}};\n" +
-            "  var ifs = ['track','quick','register','registerPage','registerOnce','trackSignup', 'trackAbtest', 'setProfile','setOnceProfile','appendProfile', 'incrementProfile', 'deleteProfile', 'unsetProfile', 'identify','login','logout','trackLink','clearAllRegister','getAppStatus'];\n" +
-            "  for (var i = 0; i < ifs.length; i++) {\n" +
-            "    w[n][ifs[i]] = w[n].call(null, ifs[i]);\n" +
-            "  }\n" +
-            "  if (!w[n]._t) {\n" +
-            "    x = d.createElement(s), y = d.getElementsByTagName(s)[0];\n" +
-            "    x.async = 1;\n" +
-            "    x.src = p;\n" +
-            "    x.setAttribute('charset','UTF-8');\n" +
-            "    y.parentNode.insertBefore(x, y);\n" +
-            "    w[n].para = para;\n" +
-            "  }\n" +
-            "})({\n" +
-            "  sdk_url: 'http://static.sensorsdata.cn/sdk/1.13.2/sensorsdata.min.js',\n" +
-            "  heatmap_url: 'http://static.sensorsdata.cn/sdk/1.13.2/heatmap.min.js',\n" +
-            "  name: 'sensors',\n" +
-            "  use_app_track:true,\n" +
-            "  server_url: 'http://sdk-test.datasink.sensorsdata.cn/sa?token=95c73ae661f85aa0&project=yangzhankun',\n" +
-            "  heatmap:{}\n" +
-            "});\n" +
-            "sensors.quick('autoTrack');";
+                    "  var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script',x = null,y = null;\n" +
+                    "  if(typeof(w['sensorsDataAnalytic201505']) !== 'undefined') {\n" +
+                    "      return false;\n" +
+                    "  }\n" +
+                    "  w['sensorsDataAnalytic201505'] = n;\n" +
+                    "  w[n] = w[n] || function(a) {return function() {(w[n]._q = w[n]._q || []).push([a, arguments]);}};\n" +
+                    "  var ifs = ['track','quick','register','registerPage','registerOnce','trackSignup', 'trackAbtest', 'setProfile','setOnceProfile','appendProfile', 'incrementProfile', 'deleteProfile', 'unsetProfile', 'identify','login','logout','trackLink','clearAllRegister','getAppStatus'];\n" +
+                    "  for (var i = 0; i < ifs.length; i++) {\n" +
+                    "    w[n][ifs[i]] = w[n].call(null, ifs[i]);\n" +
+                    "  }\n" +
+                    "  if (!w[n]._t) {\n" +
+                    "    x = d.createElement(s), y = d.getElementsByTagName(s)[0];\n" +
+                    "    x.async = 1;\n" +
+                    "    x.src = p;\n" +
+                    "    x.setAttribute('charset','UTF-8');\n" +
+                    "    y.parentNode.insertBefore(x, y);\n" +
+                    "    w[n].para = para;\n" +
+                    "  }\n" +
+                    "})({\n" +
+                    "  sdk_url: 'http://static.sensorsdata.cn/sdk/1.13.2/sensorsdata.min.js',\n" +
+                    "  heatmap_url: 'http://static.sensorsdata.cn/sdk/1.13.2/heatmap.min.js',\n" +
+                    "  name: 'sensors',\n" +
+                    "  use_app_track:true,\n" +
+                    "  server_url: 'http://sdk-test.datasink.sensorsdata.cn/sa?token=95c73ae661f85aa0&project=yangzhankun',\n" +
+                    "  heatmap:{}\n" +
+                    "});\n" +
+                    "sensors.quick('autoTrack');";
 
 }

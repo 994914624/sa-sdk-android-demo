@@ -2,6 +2,7 @@ package cn.sa.demo;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -231,6 +232,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             startActivity(intent);
+            //悬浮窗权限
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (! Settings.canDrawOverlays(this)) {
+                    Intent intent2 = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(intent2,123);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

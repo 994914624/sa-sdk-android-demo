@@ -14,8 +14,13 @@ sensorsAnalytics {
 //        //类名-方法名-方法描述，类的包名之间用/分割，（）里面是参数类型，Z是返回值类型
 //        //methodCheckSet = ['android/text/TextUtils-isEmpty-(Ljava/lang/CharSequence;)Z']
 //    }
-
+//    //启用白名单模式
+//    useInclude = true
+//    include = ['cn.sa.demo']
+    //开启插件日志
     debug = true
+    // 黑名单
+   // exclude = ['com.yanzhenjie.permission']
 }
 
 android {
@@ -64,7 +69,7 @@ dependencies {
     //implementation 'com.sensorsdata.analytics.android:TestSDK:3.2.0.debug7'
     //implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.1.2'
     //implementation(name: 'sensor-1.10.11', ext: 'aar')
-    api(name: 'SensorsAnalyticsSDK-3.2.1', ext: 'aar')
+    api(name: 'SensorsAnalyticsSDK-pre-3.2.4-pre', ext: 'aar')
 
     // butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'

@@ -3,20 +3,16 @@ package cn.sa.demo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.jakewharton.rxbinding.view.RxView;
-import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-//import com.sensorsdata.analytics.android.sdk.SensorsDataTrackViewOnClick;
 import java.util.concurrent.TimeUnit;
 import androidx.databinding.DataBindingUtil;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import butterknife.internal.DebouncingOnClickListener;
 import cn.sa.demo.R;
-import cn.sa.demo.custom.Test2;
+import cn.sa.demo.custom.Main;
 import cn.sa.demo.databinding.ActivityClickBinding;
 import cn.sa.demo.entity.BindingEntity;
 import cn.sa.demo.utils.AccessibilityUtil;
@@ -35,6 +31,15 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
         this.setTitle("设置点击方式");
         unbinder = ButterKnife.bind(this);
         initView();
+
+//        long l = (long) (Math.random() * 10000L);// 10s 内 crash
+//        new Handler(getMainLooper()).postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                String a = null;
+//                a.toString();
+//            }
+//        },l);
     }
 
     private void initView() {
@@ -179,7 +184,7 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
      * 10. lambda 2 方法引用方式。
      */
     private void type10() {
-        findViewById(R.id.tv_click_10).setOnClickListener(new Test2():: click);
+        findViewById(R.id.tv_click_10).setOnClickListener(new Main():: click);
     }
 
     class Test {

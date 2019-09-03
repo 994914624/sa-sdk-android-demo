@@ -9,6 +9,13 @@
         android:gravity="center"
         android:id="@+id/tv_recycleView_item"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="30dp" />
+    <TextView
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text="hh"
+        android:id="@+id/tv_recycleView_item_2"
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
 </LinearLayout>
