@@ -3,8 +3,11 @@ package cn.sa.demo.utils;
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsSeekBar;
+import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
@@ -112,15 +115,35 @@ public class ViewUtil {
      */
     @RequiresApi(api = 11)
     public static boolean isViewSelfVisible(View view) {
+        // androidx.appcompat.widget.ContentFrameLayout，720，1118，1.0，true，Rect(20, 1672 - 700, 2790)
+        //|| !view.getLocalVisibleRect(new Rect()) 获取有问题
         if (view == null) {
             return false;
         }
-        if (view.getWidth() <= 0 || view.getHeight() <= 0 || view.getAlpha() <= 0.0f || !view.getLocalVisibleRect(new Rect())) {
+        Rect rect =new Rect();
+        boolean b = view.getLocalVisibleRect(rect);
+
+        int[] location = new  int[2] ;
+        view.getLocationInWindow(location);
+        if("androidx.appcompat.widget.ContentFrameLayout".equals(view.getClass().getCanonicalName())){
+            Log.i("yyyzsss", String.format("%s，%s，%s，%s，%s，%s",view.getClass().getCanonicalName(), view.getWidth(),view.getHeight(),view.getAlpha(),b,rect.toString()));
+
+        }
+        if (view.getWidth() <= 0 || view.getHeight() <= 0 || view.getAlpha() <= 0.0f || !b) {
+            Log.i("yyyz", String.format("%s，%s，%s，%s，%s，%s，|  %s，%s",view.getClass().getCanonicalName(), view.getWidth(),view.getHeight(),view.getAlpha(),b,rect.toString(),location[0],location[1]));
             return false;
         }
-        return (view.getVisibility() != VISIBLE && view.getAnimation() != null && view.getAnimation().getFillAfter()) || view.getVisibility() == VISIBLE;
+        return view.getVisibility() == VISIBLE || (view.getVisibility() != VISIBLE && view.getAnimation() != null && view.getAnimation().getFillAfter());
     }
 
+
+    /**
+     *
+     */
+    public static boolean isViewClickable(View view) {
+        return view.isClickable() || (view instanceof RadioGroup) || (view instanceof Spinner) || (view instanceof AbsSeekBar) || (view.getParent() != null && (view.getParent() instanceof AdapterView) && ((AdapterView) view.getParent()).isClickable());
+    }
+    
     /**
      * instanceOf ViewPager
      */

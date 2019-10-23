@@ -36,7 +36,7 @@
   name: 'sensors',
   // 打通 App 和 H5
   use_app_track:true,
-  server_url: 'http://sdk-test.datasink.sensorsdata.cn/sa?token=95c73ae661f85aa0&project=yangzhankun',
+  server_url: 'https://sdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=21f2e56df73988c7',
   heatmap:{}
 });
 sensors.quick('autoTrack');
@@ -46,7 +46,7 @@ sensors.quick('autoTrack');
 	<body>
 		<a href="javascript:void(0)" onclick="jump()">
 			<!-- 软件截图/海报地址 -->
-			<img src="https://www.baidu.com/img/bd_logo1.png?qua=high" />
+			<img src="https://sensorsdata.cn/assets/img/logo_2018_green_a32d540.svg" />
 		</a>
 		<div class="btn">
 			<a  href="javascript:void(0)" onclick="jump()">
@@ -61,11 +61,11 @@ sensors.quick('autoTrack');
 			var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 			if(isAndroid==1){
 				// 替换安卓下载地址
-                alert('Android');
+                alert('当前为 Android 设备，将跳到应用宝');
 				window.location.href="https://sj.qq.com/myapp/detail.htm?apkName=com.sensorsdata.analytics.android.app"
 			} else {
 				// 替换苹果ios的下载地址
-                alert('iOS');
+                alert('当前为 iOS 设备，将跳到 App Store');
 				window.location.href="https://apps.apple.com/cn/app/id1281806378"
 			};
 		}

@@ -13,8 +13,10 @@ import com.growingio.android.sdk.collection.GrowingIO;
 //import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.growingio.android.sdk.deeplink.DeeplinkCallback;
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
+import com.sensorsdata.analytics.android.sdk.SensorsAnalyticsAutoTrackEventType;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties;
+import com.vondear.rxtool.RxTool;
+
 //import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
 
 import org.json.JSONException;
@@ -39,7 +41,7 @@ public class App extends Application {
     final static String SA_SERVER_URL_DEBUG = "https://sdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=21f2e56df73988c7";
 
     // release 模式的数据接收地址（发版，正式项目）
-    final static String SA_SERVER_URL_RELEASE = "【正式项目】数据接收地址";
+    final static String SA_SERVER_URL_RELEASE = "https://sdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=21f2e56df73988c7";
 
     private boolean isDebugMode;
     private static Context context;
@@ -53,8 +55,11 @@ public class App extends Application {
         super.onCreate();
         context = this.getApplicationContext();
         // 在 Application 的 onCreate 初始化 SDK
-        initSensorsDataSDK(this);
+        initSensorsDataSDK();
+        // 风控 SDK
+        //initSensorsRiskControlAPI();
         initGIO();
+        RxTool.init(this);
         this.registerActivityLifecycleCallbacks(new AppActivityLifecycleCallbacks());
     }
 
@@ -71,7 +76,7 @@ public class App extends Application {
                     @Override
                     public void onReceive(Map<String, String> map, int i) {
                         //if (i == DeeplinkCallback.SUCCESS) {
-                            Log.e(TAG, "-----> " + map.toString());
+                        Log.e(TAG, "-----> " + map.toString());
                         //}
                     }
                 })
@@ -81,46 +86,49 @@ public class App extends Application {
     /**
      * 初始化 SDK 、设置公共属性、开启自动采集
      */
-    private void initSensorsDataSDK(Context context) {
+    private void initSensorsDataSDK() {
         try {
+            // 设置 SAConfigOptions，传入数据接收地址 SA_SERVER_URL
+            SAConfigOptions saConfigOptions = new SAConfigOptions(isDebugMode(this) ? SA_SERVER_URL_DEBUG : SA_SERVER_URL_RELEASE);
 
-            isDebugMode = isDebugMode(this);
+            // 通过 SAConfigOptions 设置神策 SDK options
+            saConfigOptions.setAutoTrackEventType(
+                            SensorsAnalyticsAutoTrackEventType.APP_START | // 自动采集 App 启动事件
+                            SensorsAnalyticsAutoTrackEventType.APP_END | // 自动采集 App 退出事件
+                            SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN | // 自动采集 App 浏览页面事件
+                            SensorsAnalyticsAutoTrackEventType.APP_CLICK)   // 自动采集控件点击事件
+                    .enableLog(isDebugMode(this))        // 开启神策调试日志，默认关闭(调试时，可开启日志)。
 
-            // 初始化神策 SDK
-            SensorsDataAPI.sharedInstance(this,new SAConfigOptions(SA_SERVER_URL_DEBUG).enableMultiProcess(true));
-          //  SensorsDataAPI.sharedInstance(this,SA_SERVER_URL_DEBUG, SensorsDataAPI.DebugMode.DEBUG_OFF);
-            // 初始化SDK后，获取应用名称设置为公共属性
+                    .enableTrackAppCrash(); // 开启 crash 采集
 
+            // 需要在主线程初始化神策 SDK
+            SensorsDataAPI.startWithConfiguration(this, saConfigOptions);
+
+            // 初始化 SDK 后，可以获取应用名称设置为公共属性
             JSONObject properties = new JSONObject();
             properties.put("app_name", getAppName(context));
             SensorsDataAPI.sharedInstance().registerSuperProperties(properties);
 
-            // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
-            List<SensorsDataAPI.AutoTrackEventType> eventTypeList = new ArrayList<>();
-            // $AppStart
-            eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_START);
-            // $AppEnd
-            eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_END);
-            // $AppViewScreen
-            eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_VIEW_SCREEN);
-            // $AppClick
-            eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
-            SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
-
-            // 开启 Fragment $AppViewScreen
             SensorsDataAPI.sharedInstance().trackFragmentAppViewScreen();
+            SensorsDataAPI.sharedInstance().enableHeatMap();
 
-            //初始化 SDK 之后，开启可视化全埋点, 在采集 $AppClick 事件时会记录 View 的 ViewPath
-            //SensorsDataAPI.sharedInstance().enableVisualizedAutoTrack();
-            // crash 采集
-            SensorsDataAPI.sharedInstance().trackAppCrash();
-            // 开启调试日志
-            SensorsDataAPI.sharedInstance().enableLog(true);
-
+            // 初始化 SDK 后，开启 RN 页面控件点击事件的自动采集
+            SensorsDataAPI.sharedInstance().enableReactNativeAutoTrack();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 初始化风控 SDK，注意由于风控会使用神策分析 SDK 中的 API 接口，需要先初始化神策分析 SDK。
+     */
+//    private void initSensorsRiskControlAPI () {
+//        SARiskControlAPI.RCConfigOptions rcConfigOptions = new SARiskControlAPI.RCConfigOptions();
+//        rcConfigOptions.enableTrackAppList(true, true);
+//        // 开启传感器
+//        rcConfigOptions.enableSensorDetector(true);
+//        SARiskControlAPI.startWithConfigOptions(this, rcConfigOptions);
+//    }
 
     /**
      * @param context App 的 Context

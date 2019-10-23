@@ -25,6 +25,14 @@ sensorsAnalytics {
 
 android {
     compileSdkVersion 28
+    signingConfigs {
+        config {
+            keyAlias 'yang'
+            keyPassword '123456'
+            storeFile file('../sign.jks')
+            storePassword '123456'
+        }
+    }
     defaultConfig {
         applicationId "cn.sa.demo"
         minSdkVersion 16
@@ -35,6 +43,10 @@ android {
         //gio
         resValue("string", "growingio_project_id", "ad8d6a344dbae02f")
         resValue("string", "growingio_url_scheme", "growing.6b64332caad4ecfe")
+
+        // Enabling multidex support.
+        multiDexEnabled true
+        multiDexKeepProguard file('multidexKeep.pro')
     }
 
     compileOptions {
@@ -47,7 +59,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.config
+            minifyEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -65,11 +79,13 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
     //添加 Sensors Analytics SDK 依赖
     //implementation 'com.sensorsdata.analytics.android:TestSDK:3.2.0.debug7'
-    //implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.1.2'
+    implementation 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:3.2.5'
     //implementation(name: 'sensor-1.10.11', ext: 'aar')
-    api(name: 'SensorsAnalyticsSDK-pre-3.2.4-pre', ext: 'aar')
+    //api(name: 'SensorsAnalyticsSDK-pre-3.2.4-pre', ext: 'aar')
+    //api(name: 'RiskControlSDK', ext:'aar')
 
     // butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -87,6 +103,17 @@ dependencies {
     }
     //pinyin4j 2.5.0 有问题，2.5.1 可以
     //implementation 'com.belerweb:pinyin4j:2.5.0'
+
+    //RxTool 基础工具库
+    implementation "com.github.tamsiree.RxTool:RxKit:2.3.9"
+    //RxTool UI库
+    implementation "com.github.tamsiree.RxTool:RxUI:2.3.9"
+    //RxTool 相机库
+    implementation "com.github.tamsiree.RxTool:RxCamera:2.3.9"
+    //Zxing核心包
+    implementation 'com.google.zxing:core:3.3.0'
+    //RxTool 功能库（Zxing扫描与生成二维码条形码 支付宝 微信）
+    implementation "com.github.tamsiree.RxTool:RxFeature:2.3.9"
 }
 
 repositories {

@@ -1,27 +1,44 @@
 package cn.sa.demo;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.Result;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
+import com.vondear.rxfeature.activity.ActivityScanerCode;
+import com.vondear.rxfeature.module.scaner.OnRxScanerListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import cn.sa.demo.activity.ClickActivity;
 import cn.sa.demo.activity.FragmentActivity;
+import cn.sa.demo.activity.QRCodeActivity;
 import cn.sa.demo.activity.ViewActivity;
 import cn.sa.demo.activity.WebViewActivity;
 import cn.sa.demo.utils.AccessibilityUtil;
+import cn.sa.demo.utils.LuckyMoneyUtil;
+import cn.sa.demo.utils.TestHandler;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnRxScanerListener {
 
     final static String TAG = "SADemo.MainActivity";
     private TextView tvAssessibility;
@@ -34,6 +51,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // TODO trackInstallation 记录激活事件、并做渠道追踪
         trackInstallation(0);
         initView();
+        initInputActionBar();
+    }
+
+    EditText editText;
+    private void initInputActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            View view = LayoutInflater.from(this).inflate(R.layout.action_bar_input,null);
+            ActionBar.LayoutParams lp =new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+            actionBar.setCustomView(view,lp);
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setDisplayShowCustomEnabled(true);
+            //输入框
+            editText = view.findViewById(R.id.edt_action_bar);
+            editText.setHint("可更换数据接收地址或扫码填入");
+            TextView textView = view.findViewById(R.id.tv_action_bar);
+            textView.setText("设置");
+            textView.setOnClickListener(new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onClick(View v) {
+                    String input = editText.getText()+"";
+                    if(!TextUtils.isEmpty(input)){
+                        if(input.contains("https://")||input.contains("http://")){
+                            SensorsDataAPI.sharedInstance().setServerUrl(input);
+                            runText.setText(String.format("当前数据接收地址：%s", getServerUrl()));
+                            Toast.makeText(MainActivity.this,"数据接收 URL，设置为："+input,Toast.LENGTH_SHORT).show();
+                        }
+                        // 隐藏软键盘
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                    }
+                }
+            });
+            view.findViewById(R.id.scan_action_bar).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 扫码的回调
+                    ActivityScanerCode.setScanerListener(MainActivity.this);
+                    startActivity(new Intent(MainActivity.this, QRCodeActivity.class));
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public void onSuccess(String type, Result result) {
+        String input = result+"";
+        if(!TextUtils.isEmpty(input)){
+            Log.i(TAG,result.getText()+"");
+            if(input.contains("https://")||input.contains("http://")){
+                SensorsDataAPI.sharedInstance().setServerUrl(input);
+                runText.setText(String.format("当前数据接收地址：%s", getServerUrl()));
+                Toast.makeText(this,"数据接收 URL，设置为："+input,Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onFail(String type, String message) {
+
     }
 
     @Override
@@ -55,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         tvAssessibility.setText(String.format("无障碍：%s", assessibilityStatus));
     }
-
+    TextView runText;
     private void initView() {
         findViewById(R.id.tv_main_track).setOnClickListener(this);
         findViewById(R.id.tv_main_profileSet).setOnClickListener(this);
@@ -64,8 +143,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.tv_main_clickType).setOnClickListener(this);
         findViewById(R.id.tv_main_fragment).setOnClickListener(this);
         findViewById(R.id.tv_main_appH5).setOnClickListener(this);
+        runText = findViewById(R.id.tv_main_run_text);
+        runText.setText(String.format("当前数据接收地址：%s", getServerUrl()));
         tvAssessibility = findViewById(R.id.tv_main_assessibility);
         tvAssessibility.setOnClickListener(this);
+        tvAssessibility.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                LuckyMoneyUtil.popSeekBar(MainActivity.this);
+                return false;
+            }
+        });
+        TestHandler.recycle();
+    }
+
+    public String getServerUrl() {
+        // 反射调用 getServerUrl
+        try {
+            Class<?> clazz = Class.forName("com.sensorsdata.analytics.android.sdk.SensorsDataAPI");
+            java.lang.reflect.Method sharedInstance = clazz.getMethod("sharedInstance");
+            java.lang.reflect.Method getServerUrl = clazz.getDeclaredMethod("getServerUrl");
+            getServerUrl.setAccessible(true);
+            Object sdkInstance = sharedInstance.invoke(null);
+            return (String)getServerUrl.invoke(sdkInstance);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 
@@ -78,14 +182,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // TODO 代码埋点
         try {
             JSONObject properties = new JSONObject();
-            properties.put("ProductID", 123456);                    // 设置商品ID
+
+            properties.put("ProductID", 18345019902D);                    // 设置商品ID
             properties.put("ProductCatalog", "Laptop Computer");    // 设置商品类别
             properties.put("IsAddedToFav", false);                  // 是否被添加到收藏夹
             // 数据发送到另一个项目
-            properties.put("$project","YangYang")
-                    .put("$token","95c73ae661f85aa0");
+//            properties.put("$project","YangYang")
+//                    .put("$token","95c73ae661f85aa0");
             // 埋点触发 "ViewProduct" 事件
-          //  SensorsDataAPI.sharedInstance().trackWithProject("ViewProduct", properties);
+            SensorsDataAPI.sharedInstance().track("ViewProduct", properties);
         } catch (Exception e) {
             e.printStackTrace();
         }

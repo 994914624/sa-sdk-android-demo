@@ -127,32 +127,32 @@ public class ElementDisplayManager {
         getElementDisplayHandler().removeCallbacks(mDisplayRunable);
     }
 
-//    private static final Object mHandlerLock = new Object();
-//    private static Handler mUiThreadHandler = null;
-//
-//    private static Handler getUiThreadHandler() {
-//        Handler handler;
-//        synchronized (mHandlerLock) {
-//            if (mUiThreadHandler == null) {
-//                mUiThreadHandler = new Handler(Looper.getMainLooper());
-//            }
-//            handler = mUiThreadHandler;
-//        }
-//        return handler;
-//    }
-    private static final HandlerThread mElementDisplayThread = new HandlerThread("ElementDisplayThread");
     private static final Object mHandlerLock = new Object();
-    private static Handler mElementDisplayHandler = null;
+    private static Handler mUiThreadHandler = null;
 
     private static Handler getElementDisplayHandler() {
         Handler handler;
         synchronized (mHandlerLock) {
-            if (mElementDisplayHandler == null) {
-                mElementDisplayThread.start();
-                mElementDisplayHandler = new Handler(mElementDisplayThread.getLooper());
+            if (mUiThreadHandler == null) {
+                mUiThreadHandler = new Handler(Looper.getMainLooper());
             }
-            handler = mElementDisplayHandler;
+            handler = mUiThreadHandler;
         }
         return handler;
     }
+//    private static final HandlerThread mElementDisplayThread = new HandlerThread("ElementDisplayThread");
+//    private static final Object mHandlerLock = new Object();
+//    private static Handler mElementDisplayHandler = null;
+//
+//    private static Handler getElementDisplayHandler() {
+//        Handler handler;
+//        synchronized (mHandlerLock) {
+//            if (mElementDisplayHandler == null) {
+//                mElementDisplayThread.start();
+//                mElementDisplayHandler = new Handler(mElementDisplayThread.getLooper());
+//            }
+//            handler = mElementDisplayHandler;
+//        }
+//        return handler;
+//    }
 }

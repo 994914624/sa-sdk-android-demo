@@ -4,18 +4,28 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+
+import cn.sa.demo.R;
 
 import static android.os.Looper.getMainLooper;
 
 /**
  * Created by yzk on 2019-08-30
- * WeChat 7.0.6 版本，auto click lucky money
+ * WeChat 7.0.6、7.0.7 版本，auto click lucky money
  */
 
 public class LuckyMoneyUtil {
@@ -23,8 +33,11 @@ public class LuckyMoneyUtil {
     private static final String TAG = "XXXX LuckyMoneyUtil";
     private static final int CLICKED_STEP_ONE = 1;
     private static final int CLICKED_STEP_TWO = 2;
+    private static int delayTime = 500;
     private static final String PACKAGE = "com.tencent.mm";
     private static final String BUTTON_OPEN_ID_7_0_6 = "com.tencent.mm:id/d5a";// 每个版本 Button "開" id 会变
+    private static final String BUTTON_OPEN_ID_7_0_7 = "com.tencent.mm:id/da7";// 每个版本 Button "開" id 会变
+
     public static AccessibilityService accessService;
     private static Runnable checkOpenButtonTask = new Runnable() {
         @Override
@@ -42,7 +55,7 @@ public class LuckyMoneyUtil {
                 case CLICKED_STEP_ONE:
                     Log.e(TAG, "-----------> STEP_ONE");
                     // 0.5秒后寻找 "開" 按钮 / 或点击通知后的遍历
-                    handler.postDelayed(checkOpenButtonTask, 500);
+                    handler.postDelayed(checkOpenButtonTask, delayTime);
                     // 1.5秒后 再寻找一次 "開" 按钮（用于查漏，防止由于网络等因素0.5秒时没找到"開"）
                     handler.postDelayed(checkOpenButtonTask, 1500);
                     break;
@@ -77,7 +90,7 @@ public class LuckyMoneyUtil {
                     Notification notification = (Notification) event.getParcelableData();
                     String text = notification.tickerText + "";
                     Log.i(TAG, "-------Notification------->: " + text);
-                    if (text.contains("[微信红包]")||text.equals("null")) {
+                    if (text.contains("[微信红包]") || text.equals("null")) {
                         PendingIntent pendingIntent = notification.contentIntent;
                         // 打开消息
                         pendingIntent.send();
@@ -117,6 +130,13 @@ public class LuckyMoneyUtil {
                 }
             }
             // WeChat 点击 "開" 按钮
+            if (BUTTON_OPEN_ID_7_0_7.equals(info.getViewIdResourceName())) {
+                info.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                Log.e(TAG, "----------->  開");
+                performBack();
+                // 点击了第二步
+                handler.sendEmptyMessage(CLICKED_STEP_TWO);
+            }
             if (BUTTON_OPEN_ID_7_0_6.equals(info.getViewIdResourceName())) {
                 info.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 Log.e(TAG, "----------->  開");
@@ -149,5 +169,49 @@ public class LuckyMoneyUtil {
                 }
             }
         }, 2000);
+    }
+
+    private static TextView textView;
+
+    /**
+     * because of pop lucky money open page need time
+     * so delay sometime and find it
+     */
+    public static void popSeekBar(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("选择寻找 lucky money 延迟时间(ms)");
+        builder.setPositiveButton("关闭",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        textView = null;
+                    }
+                });
+        View view = LayoutInflater.from(context).inflate(R.layout.access_service_seekbar, null);
+        textView = view.findViewById(R.id.tv_acc);
+        textView.setText(String.format("延迟：%s ms", delayTime));
+        SeekBar seekBar = view.findViewById(R.id.seek_bar_acc);
+        seekBar.setMax(1000);
+        seekBar.setProgress(delayTime);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textView.setText(String.format("延迟：%s ms", progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                delayTime = seekBar.getProgress();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setView(view);// 替换内部的 view
+        dialog.show();
+        //dialog.setContentView(view);// 替换整个窗口
     }
 }

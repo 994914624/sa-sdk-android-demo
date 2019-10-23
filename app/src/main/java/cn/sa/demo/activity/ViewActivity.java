@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import com.google.android.material.tabs.TabLayout;
 import com.growingio.android.sdk.collection.AbstractGrowingIO;
 import com.growingio.android.sdk.collection.GrowingIO;
+//import com.sensorsdata.risk_control.api.SARiskControlAPI;
+//import com.sensorsdata.risk_control.api.callback.EditTextListener;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -170,6 +172,33 @@ public class ViewActivity extends BaseActivity implements View.OnClickListener {
         //GrowingIO.getInstance().trackEditText(mEditText);
         //mEditText.setTag(AbstractGrowingIO.GROWING_TRACK_TEXT, Boolean.valueOf(true));
         mEditText.setShowSoftInputOnFocus(false);//屏蔽软键盘
+        handleEditText(mEditText);
+    }
+
+    /**
+     * 风控 SDK 处理 EditText
+     * @param editText EditText
+     */
+    private void handleEditText(EditText editText) {
+//        final EditTextListener editTextListener = SARiskControlAPI.sharedInstance().trackEditTextEvent(this, editText, "输入框");
+//        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    editTextListener.onFocused();
+//                } else {
+//                    editTextListener.deFocused();
+//                }
+//            }
+//        });
+//
+//        editText.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                editTextListener.onKey(v, keyCode, event);
+//                return false;
+//            }
+//        });
     }
 
     /*

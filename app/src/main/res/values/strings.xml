@@ -4,6 +4,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="des">test track event|lucky money</string>
-    <item type="id" name="fragment_root_view"/>
-    <item type="id" name="view_send_accessibility_event"/>
+    <item name="fragment_root_view" type="id" />
+    <item name="view_send_accessibility_event" type="id" />
 </resources>

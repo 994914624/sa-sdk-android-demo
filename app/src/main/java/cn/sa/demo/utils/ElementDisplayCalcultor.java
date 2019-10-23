@@ -1,5 +1,6 @@
 package cn.sa.demo.utils;
 
+import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -105,8 +106,35 @@ public class ElementDisplayCalcultor {
                 }
             }
         }
+    }
 
+    /**
+     * 遍历2 View
+     */
+    private void traverseView2(View view, ViewNodeEntity viewNodeEntity) {
+        if (view instanceof ViewGroup && !(view instanceof Spinner)) {
+            Log.e(TAG, "traverseView222: " + view.getClass().getSimpleName());
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View childView = viewGroup.getChildAt(i);
+                // 收集 viewPath & 元素内容
+                viewNodeEntity = collectViewPath(view, viewNodeEntity, i);
 
+                Rect rect =new Rect();
+                boolean b = childView.getLocalVisibleRect(rect);
+
+                Log.i("getLocalVisibleRect", String.format("----- %s:  , %s:,  --- %s: ", childView.getClass().getCanonicalName(),rect.toString(),b));
+                // 递归，并把 viewPath 向下传递
+                traverseView2(childView, new ViewNodeEntity(viewNodeEntity.getViewPath()).setViewPosition(viewNodeEntity.getViewPosition()));
+            }
+        } else {
+            // 遍历完成
+            // childView 自身可见
+            if (ViewUtil.isViewSelfVisible(view)) {
+                traverseOK(view, viewNodeEntity);
+
+            }
+        }
     }
 
     /**
