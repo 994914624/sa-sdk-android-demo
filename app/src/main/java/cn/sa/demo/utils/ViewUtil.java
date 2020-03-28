@@ -36,6 +36,29 @@ public class ViewUtil {
 
 
     /**
+     * 判断 view 是否可见
+     */
+    public static boolean isVisible(View view) {
+        if (view == null) {
+            return false;
+        }
+        // view 自身是否可见
+        if (view.getWidth() <= 0 || view.getHeight() <= 0 || view.getAlpha() <= 0.0f ||!view.getLocalVisibleRect(new Rect())) {
+            return false;
+        }
+        // view 的父容器是否可见
+        if (!view.isShown()) {
+            return false;
+        }
+        // view 自身有动画时
+        if (view.getVisibility() != View.VISIBLE && view.getAnimation() != null && view.getAnimation().getFillAfter()){
+            return true;
+        }
+        return view.getVisibility() == View.VISIBLE;
+    }
+
+
+    /**
      * 获取 class name
      */
     public static String getSimpleClassName(Class clazz) {

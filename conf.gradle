@@ -1,0 +1,24 @@
+// 在分析完成 gradle 之后执行
+afterEvaluate { Project project ->
+    project.tasks.names.each { taskName ->
+//        println '-------------------'+taskName
+    }
+
+}
+
+// 可定义 extra properties，做一些全局参数的配置
+ext {
+    // The following are only a few examples of the types of properties you can define.
+    // compileSdkVersion = 29
+    // 是否是 Release 版本（默认为 true）
+    isRelease = true
+}
+
+// 获取执行编译的参数 ./gradlew assembleDebug
+gradle.startParameter.taskNames.each {
+    println '-------- task -----------> '+it
+    if(it.contains("Debug")){
+        // 当 assembleDebug 时，isRelease 为 false
+        rootProject.ext.isRelease = false
+    }
+}

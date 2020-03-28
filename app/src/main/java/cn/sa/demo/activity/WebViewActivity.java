@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -34,6 +35,7 @@ import com.vondear.rxfeature.module.scaner.OnRxScanerListener;
 
 import cn.sa.demo.R;
 import cn.sa.demo.custom.MyWebView;
+import cn.sa.demo.utils.ToolBox;
 
 /**
  * 打通 App 和 H5
@@ -101,8 +103,10 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
         WEB_URL = result.getText() + "";
         if (!TextUtils.isEmpty(WEB_URL)) {
             webView.loadUrl(WEB_URL);
+            // to 剪切板
+            ToolBox.copy(WEB_URL,this);
             runText.setText(String.format("当前 URL：%s", WEB_URL));
-            Toast.makeText(this, "扫码成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "扫码成功 & 已复制到剪切板", Toast.LENGTH_SHORT).show();
             Log.i(TAG, WEB_URL);
         }
     }
@@ -116,12 +120,15 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
      * 打通 App 和 H5 文档：https://www.sensorsdata.cn/manual/app_h5.html
      */
     private void initWebView() {
+        // 允许静态页面的 cookie，accept cookies for file scheme URLs.
+        CookieManager.setAcceptFileSchemeCookies(true);
+
         webView = new MyWebView(this);
         ViewGroup viewGroup = findViewById(R.id.webview);
         viewGroup.addView(webView);
         // TODO 打通 App 和 H5
         // 打通 App 和 H5，enableVerify 指定为 true 开启数据接收地址 URL 安全校验
-        //SensorsDataAPI.sharedInstance().showUpWebView(webView,false,false);
+//        SensorsDataAPI.sharedInstance().showUpWebView(webView,false,false);
 
         // 反射调用 showUpWebView
         try {
@@ -129,10 +136,12 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
             java.lang.reflect.Method sharedInstance = clazz.getMethod("sharedInstance");
             java.lang.reflect.Method showUpWebView = clazz.getMethod("showUpWebView", android.webkit.WebView.class, boolean.class, boolean.class);
             Object sdkInstance = sharedInstance.invoke(null);
-            showUpWebView.invoke(sdkInstance, webView, false, true);
+            showUpWebView.invoke(sdkInstance, webView, false, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+//        webView.addJavascriptInterface();
         // 这里使用一个本地 html 来模拟验证 App 和 H5打通
         WEB_URL = "file:///android_asset/h5.html";
         webView.loadUrl(WEB_URL);
@@ -185,13 +194,13 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (webView != null) {
-            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-            webView.clearHistory();
-            ((ViewGroup) webView.getParent()).removeView(webView);
-            webView.destroy();
-            webView = null;
-        }
+//        if (webView != null) {
+//            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+//            webView.clearHistory();
+//            ((ViewGroup) webView.getParent()).removeView(webView);
+//            webView.destroy();
+//            webView = null;
+//        }
     }
 
     /**

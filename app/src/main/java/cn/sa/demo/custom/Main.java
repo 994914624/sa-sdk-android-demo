@@ -5,11 +5,16 @@ import android.os.Build;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
@@ -22,19 +27,39 @@ public class Main {
 
 
     public static void main(String[] args) {
+        System.out.println("---------------:"+java.util.UUID.nameUUIDFromBytes(" ".getBytes()));
+
         //decodeData(DD);
 
-        System.out.println("1111: "+UUID.nameUUIDFromBytes("".getBytes()));
-        System.out.println("2222: "+UUID.nameUUIDFromBytes("".getBytes()));
+//        System.out.println("1111: "+UUID.nameUUIDFromBytes("".getBytes()));
+//        System.out.println("2222: "+UUID.nameUUIDFromBytes("".getBytes()));
+//
+//        MessageDigest md;
+//        try {
+//            md = MessageDigest.getInstance("MD5");
+//            byte[] md5Bytes = md.digest("".getBytes());
+//            System.out.println("3333: "+new String(md5Bytes));
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
 
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("MD5");
-            byte[] md5Bytes = md.digest("".getBytes());
-            System.out.println("3333: "+new String(md5Bytes));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+//        // 求 A - B 多少条路
+//        // 横竖6条路，总共五个交叉点，每个交叉点有几条前进的路
+//        List<Integer> allXPoint = new ArrayList<>();
+//        allXPoint.add(2);//1
+//        allXPoint.add(2);//2
+//        allXPoint.add(3);//3
+//        allXPoint.add(2);//4
+//        allXPoint.add(2);//5
+//        for(int i =0;i<allXPoint.size();i++){
+//            int now = allXPoint.get(i);
+//            System.out.println(" -- i ---: "+i);
+//            for(int j =0;j<now;j++){
+//                System.out.println(" -- j ---: "+j);
+//                List<Integer> nextXPoint = allXPoint;
+//                nextXPoint.remove(i);
+//            }
+//        }
 
 
     }

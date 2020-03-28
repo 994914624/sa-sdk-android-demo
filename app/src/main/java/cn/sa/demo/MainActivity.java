@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,41 +20,83 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.Result;
+import com.growingio.android.sdk.collection.GrowingIO;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 import com.vondear.rxfeature.activity.ActivityScanerCode;
 import com.vondear.rxfeature.module.scaner.OnRxScanerListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import cn.sa.demo.activity.ClickActivity;
 import cn.sa.demo.activity.FragmentActivity;
 import cn.sa.demo.activity.QRCodeActivity;
 import cn.sa.demo.activity.ViewActivity;
 import cn.sa.demo.activity.WebViewActivity;
+import cn.sa.demo.custom.MyWebView;
+import cn.sa.demo.custom.SensorsDataUtil;
 import cn.sa.demo.utils.AccessibilityUtil;
 import cn.sa.demo.utils.LuckyMoneyUtil;
 import cn.sa.demo.utils.TestHandler;
+import cn.sa.demo.utils.ToolBox;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnRxScanerListener {
 
     final static String TAG = "SADemo.MainActivity";
     private TextView tvAssessibility;
+    private static ArrayList<String> list = new ArrayList<>(Arrays.asList(
+            "android##widget",
+            "android##support##v7##widget",
+            "android##support##design##widget"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setTitle("demo");
+        TextView textView = findViewById(R.id.dis);
+        textView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener(){
+
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                Log.i(TAG,"--- onViewAttachedToWindow ---: "+v.hashCode());
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                Log.i(TAG,"--- onViewDetachedFromWindow ---: "+v.hashCode());
+            }
+        });
+
+        // 设置一下缓存的地址
+        String serverUrl = ToolBox.getServerUrlFromSP(getApplicationContext(),"serverUrl");
+        if(!TextUtils.isEmpty(serverUrl)){
+            SensorsDataAPI.sharedInstance().setServerUrl(serverUrl);
+        }
+
         // TODO trackInstallation 记录激活事件、并做渠道追踪
         trackInstallation(0);
         initView();
         initInputActionBar();
+
+
+
     }
+
+
 
     EditText editText;
     private void initInputActionBar() {
@@ -76,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(!TextUtils.isEmpty(input)){
                         if(input.contains("https://")||input.contains("http://")){
                             SensorsDataAPI.sharedInstance().setServerUrl(input);
+                            // 保存到 SP
+                            ToolBox.saveServerUrlToSP(getApplicationContext(),"serverUrl",input);
                             runText.setText(String.format("当前数据接收地址：%s", getServerUrl()));
                             Toast.makeText(MainActivity.this,"数据接收 URL，设置为："+input,Toast.LENGTH_SHORT).show();
                         }
@@ -103,9 +149,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!TextUtils.isEmpty(input)){
             Log.i(TAG,result.getText()+"");
             if(input.contains("https://")||input.contains("http://")){
+                if(ToolBox.openDebugModeOrHeatMap(input,MainActivity.this)){
+                    return;
+                }
+                // 更新数据接收地址
                 SensorsDataAPI.sharedInstance().setServerUrl(input);
+                ToolBox.saveServerUrlToSP(getApplicationContext(),"serverUrl",input);
+                // to 剪切板
+                ToolBox.copy(input,this);
                 runText.setText(String.format("当前数据接收地址：%s", getServerUrl()));
-                Toast.makeText(this,"数据接收 URL，设置为："+input,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"已复制到剪切板 & 数据接收 URL 设置为："+input,Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -122,12 +175,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // WebView 页，闪屏页，Main。
 //        startActivity(new Intent(MainActivity.this, FragmentActivity.class));
 //        finish();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        FirebaseAnalytics.getInstance(this).setCurrentScreen(this,"首页","main_xxx");
+
+
         String assessibilityStatus = "(已关闭)";
         if(AccessibilityUtil.isAccessibilityServiceRunning(getApplicationContext())){
             assessibilityStatus ="(已开启)";
@@ -194,8 +249,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        // 计时开始
+        SensorsDataUtil.onPageStart("首页");
+        // 计时结束
+        SensorsDataUtil.onPageEnd("首页");
     }
 
     /**
@@ -216,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 //        int radom = (int) (Math.random()*1000);
 //        SensorsDataAPI.sharedInstance().identify("匿名 @:"+radom);
+        SensorsDataUtil.onPageEnd("首页");
     }
 
     /**

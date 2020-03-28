@@ -1,0 +1,36 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+    //gradle sdk
+    implementation gradleApi()
+    //groovy sdk
+    implementation localGroovy()
+    compileOnly 'com.android.tools.build:gradle:3.4.2'
+}
+repositories {
+    mavenCentral()
+}
+
+// 指定 group 和 version
+group = 'com.test.asmplugin'
+version = '1.0.0'
+
+// 打包到本地或者远程 Maven 库
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // 提交到远程服务器：
+            // repository(url: "http://www.xxx.xxx/repos") {
+            //    authentication(userName: "xxx", password: "xxx")
+            // }
+            // 输出到本地
+            repository(url: uri('../ASM_plugin/repo'))
+        }
+    }
+
+    doLast {
+        delete project.buildDir
+    }
+}
+

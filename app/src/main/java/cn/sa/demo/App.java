@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.WebView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.growingio.android.sdk.collection.Configuration;
 import com.growingio.android.sdk.collection.GrowingIO;
 //import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
@@ -15,6 +18,8 @@ import com.growingio.android.sdk.deeplink.DeeplinkCallback;
 import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
 import com.sensorsdata.analytics.android.sdk.SensorsAnalyticsAutoTrackEventType;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
+//import com.sensorsdata.analytics.android.sdk.SensorsDataEncrypt;
+import com.sensorsdata.analytics.android.sdk.SensorsDataTrackEventCallBack;
 import com.vondear.rxtool.RxTool;
 
 //import com.sensorsdata.analytics.android.sdk.data.DbAdapter;
@@ -27,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cn.sa.demo.custom.MyWebView;
+import cn.sa.demo.custom.SensorsDataUtil;
 import cn.sa.demo.observer.AppActivityLifecycleCallbacks;
 
 public class App extends Application {
@@ -38,10 +45,10 @@ public class App extends Application {
      */
 
     // debug 模式的数据接收地址 （测试，测试项目）
-    final static String SA_SERVER_URL_DEBUG = "https://sdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=21f2e56df73988c7";
+    final static String SA_SERVER_URL_DEBUG = "https://newsdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=5a394d2405c147ca";
 
     // release 模式的数据接收地址（发版，正式项目）
-    final static String SA_SERVER_URL_RELEASE = "https://sdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=21f2e56df73988c7";
+    final static String SA_SERVER_URL_RELEASE = "https://newsdktest.datasink.sensorsdata.cn/sa?project=yangzhankun&token=5a394d2405c147ca";
 
     private boolean isDebugMode;
     private static Context context;
@@ -54,13 +61,41 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         context = this.getApplicationContext();
+        this.registerActivityLifecycleCallbacks(new AppActivityLifecycleCallbacks());
         // 在 Application 的 onCreate 初始化 SDK
         initSensorsDataSDK();
         // 风控 SDK
         //initSensorsRiskControlAPI();
-        initGIO();
+        // GIO
+//        initGIO();
+        // RxTool 扫码等功能库
         RxTool.init(this);
-        this.registerActivityLifecycleCallbacks(new AppActivityLifecycleCallbacks());
+        // Firebase
+//        fireBaseEvent();
+    }
+
+    /**
+     * FireBase 触发事件
+     */
+    private void fireBaseEvent() {
+        // 设置用户属性
+        FirebaseAnalytics.getInstance(this).setUserProperty("name","小白");
+        FirebaseAnalytics.getInstance(this).setUserId("登录 ID-456");
+        Bundle bundle = new Bundle();
+        bundle.putString("key1","xxx1");
+        bundle.putBundle("key2",new Bundle());
+        FirebaseAnalytics.getInstance(this).logEvent("testEvent",bundle);
+        FirebaseAnalytics.getInstance(this).setSessionTimeoutDuration(180000L);
+
+        String e = FirebaseAnalytics.Param.ITEM_ID;
+
+//        FirebaseAnalytics.getInstance(this).logEvent("testEvent2",new Bundle());
+
+//        Log.e("abccc", String.format("getFirebaseInstanceId: %s,  getAppInstanceId:%s", FirebaseAnalytics.getInstance(getApplicationContext()).getFirebaseInstanceId(), FirebaseAnalytics.getInstance(getApplicationContext()).getAppInstanceId().getResult()));
+
+//        FirebaseAnalytics.getInstance(this).resetAnalyticsData();
+
+        
     }
 
     private void initGIO() {
@@ -102,7 +137,8 @@ public class App extends Application {
                     .enableTrackAppCrash(); // 开启 crash 采集
 
             // 需要在主线程初始化神策 SDK
-            SensorsDataAPI.startWithConfiguration(this, saConfigOptions);
+           SensorsDataAPI.sharedInstance(this, saConfigOptions);
+//            SensorsDataAPI.startWithConfigOptions(this, saConfigOptions);
 
             // 初始化 SDK 后，可以获取应用名称设置为公共属性
             JSONObject properties = new JSONObject();
@@ -114,6 +150,35 @@ public class App extends Application {
 
             // 初始化 SDK 后，开启 RN 页面控件点击事件的自动采集
             SensorsDataAPI.sharedInstance().enableReactNativeAutoTrack();
+            SensorsDataAPI.sharedInstance().trackAppCrash();
+
+
+            // 开启加密
+//            SensorsDataAPI.sharedInstance().enableEncrypt(true);
+//
+//            // 设置加密 SecretKey
+//            SensorsDataAPI.sharedInstance().persistentSecretKey(new SensorsDataEncrypt.PersistentSecretKey() {
+//
+//                @Override
+//                public void saveSecretKey(SensorsDataEncrypt.SecreteKey secreteKey) {
+//                    // 这里用于存储密钥，如果采用默认密钥不动态更新，可以不实现。
+//                }
+//
+//                @Override
+//                public SensorsDataEncrypt.SecreteKey loadSecretKey() {
+//                    // 这里是 SDK 读取密钥，必须实现。SDK 通过该接口读取密钥用于加密
+//                    return new SensorsDataEncrypt.SecreteKey("XXX",1);
+//                }
+//            });
+
+            SensorsDataAPI.sharedInstance().setTrackEventCallBack(new SensorsDataTrackEventCallBack() {
+                @Override
+                public boolean onTrackEvent(String eventName, JSONObject eventProperties) {
+
+                    Log.e("qqqqqqq","事件名:"+eventName +"  属性:"+eventProperties);
+                    return true;
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

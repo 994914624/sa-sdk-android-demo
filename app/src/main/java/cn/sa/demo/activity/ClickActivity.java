@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.growingio.android.sdk.collection.GrowingIO;
 import com.jakewharton.rxbinding.view.RxView;
 import java.util.concurrent.TimeUnit;
 import androidx.databinding.DataBindingUtil;
@@ -40,6 +42,7 @@ public class ClickActivity extends BaseActivity implements View.OnClickListener 
 //                a.toString();
 //            }
 //        },l);
+        GrowingIO.getInstance().setPageVariable(this, "channel", "体育");
     }
 
     private void initView() {

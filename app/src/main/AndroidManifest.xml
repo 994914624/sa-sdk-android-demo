@@ -43,6 +43,19 @@
 
                 <data
                     android:host="debugmode"
+                    android:scheme="sf20191010nb" />
+                <data
+                    android:host="debugmode"
+                    android:scheme="sf20191010nb" />
+                <data
+                    android:host="heatmap"
+                    android:scheme="sf20191010nb" />
+                <data
+                    android:host="visualized"
+                    android:scheme="sf20191010nb" />
+
+                <data
+                    android:host="debugmode"
                     android:scheme="sa64b7c48f" />
                 <data
                     android:host="debugmode"
@@ -106,6 +119,19 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_info" />
         </service>
+
+        <!--是否是xposed模块-->
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true"/>
+        <!--模块名字-->
+        <meta-data
+            android:name="xposeddescription"
+            android:value="修改微信"/>
+        <!--xposed最低版本-->
+        <meta-data
+            android:name="xposedminversion"
+            android:value="82"/>
     </application>
 
 </manifest>
