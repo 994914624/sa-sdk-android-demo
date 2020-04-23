@@ -164,6 +164,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.3'
     // Add the Firebase SDK for Crashlytics.
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01'
+
+    // stetho 查看数据库
+    debugImplementation 'com.facebook.stetho:stetho:1.5.0'
+
+    // appsflyer
+    implementation 'com.appsflyer:af-android-sdk:5.2.0'
 }
 
 repositories {

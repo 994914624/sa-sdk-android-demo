@@ -13,27 +13,34 @@ class HookConfig {
 
 
     static {
-        // TD hook config
-        arrowsTarget.put("com/tendcloud/tenddata/TCAgent", [
-                ["onEvent", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V", "java/lang/Object", null,
-                 "cn/sa/demo/utils/SensorsDataUtil", "onEvent", "(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V", 1, 3
-                ],
-                ["onPageStart", "(Landroid/content/Context;Ljava/lang/String;)V", "java/lang/Object", null,
-                 "cn/sa/demo/utils/SensorsDataUtil", "onPageStart", "(Ljava/lang/String;)V", 1, 1
-                ],
-                ["onPageEnd", "(Landroid/content/Context;Ljava/lang/String;)V", "java/lang/Object", null,
-                 "cn/sa/demo/utils/SensorsDataUtil", "onPageEnd", "(Ljava/lang/String;)V", 1, 1
-                ]
-        ])
-        // * 表示类名不做限时
+//        // TD hook config
+//        arrowsTarget.put("com/tendcloud/tenddata/TCAgent", [
+//                ["onEvent", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V", "java/lang/Object", null,
+//                 "cn/sa/demo/utils/SensorsDataUtil", "onEvent", "(Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V", 1, 3
+//                ],
+//                ["onPageStart", "(Landroid/content/Context;Ljava/lang/String;)V", "java/lang/Object", null,
+//                 "cn/sa/demo/utils/SensorsDataUtil", "onPageStart", "(Ljava/lang/String;)V", 1, 1
+//                ],
+//                ["onPageEnd", "(Landroid/content/Context;Ljava/lang/String;)V", "java/lang/Object", null,
+//                 "cn/sa/demo/utils/SensorsDataUtil", "onPageEnd", "(Ljava/lang/String;)V", 1, 1
+//                ]
+//        ])
+        // * 表示类名不做限
         arrowsTarget.put("*", [
                 // hook onClick 点击
                 ["onClick", "(Landroid/view/View;)V", null, "android/view/View\$OnClickListener",
-                 "cn/sa/demo/utils/AutoUtil", "onClick", "(Landroid/view/View;)V", 1, 1
+                 "cn/sa/demo/utils/hook2/AutoUtil", "onClick", "(Landroid/view/View;)V", 1, 1
                 ],
                 // Activity onResume
                 ["onResume", "()V", "/app/AppCompatActivity", null,
-                 "cn/sa/demo/utils/AutoUtil", "onResume", "(Landroid/app/Activity;)V", 0, 1
+                 "cn/sa/demo/utils/hook2/AutoUtil", "onResume", "(Landroid/app/Activity;)V", 0, 1
+                ]
+        ])
+
+        // hook trackEvent
+        arrowsTarget.put("com/sensorsdata/analytics/android/sdk/SensorsDataAPI",[
+                ["trackEvent", "(Lcom/sensorsdata/analytics/android/sdk/EventType;Ljava/lang/String;Lorg/json/JSONObject;Ljava/lang/String;)V", null, null,
+                 "cn/sa/demo/utils/hook2/AutoUtil", "trackEvent", "(Ljava/lang/Object;Ljava/lang/String;Lorg/json/JSONObject;Ljava/lang/String;)V", 1, 4
                 ]
         ])
     }

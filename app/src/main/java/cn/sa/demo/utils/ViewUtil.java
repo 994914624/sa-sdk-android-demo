@@ -149,11 +149,11 @@ public class ViewUtil {
         int[] location = new  int[2] ;
         view.getLocationInWindow(location);
         if("androidx.appcompat.widget.ContentFrameLayout".equals(view.getClass().getCanonicalName())){
-            Log.i("yyyzsss", String.format("%s，%s，%s，%s，%s，%s",view.getClass().getCanonicalName(), view.getWidth(),view.getHeight(),view.getAlpha(),b,rect.toString()));
+//            Log.i("yyyzsss", String.format("%s，%s，%s，%s，%s，%s",view.getClass().getCanonicalName(), view.getWidth(),view.getHeight(),view.getAlpha(),b,rect.toString()));
 
         }
         if (view.getWidth() <= 0 || view.getHeight() <= 0 || view.getAlpha() <= 0.0f || !b) {
-            Log.i("yyyz", String.format("%s，%s，%s，%s，%s，%s，|  %s，%s",view.getClass().getCanonicalName(), view.getWidth(),view.getHeight(),view.getAlpha(),b,rect.toString(),location[0],location[1]));
+//            Log.i("yyyz", String.format("%s，%s，%s，%s，%s，%s，|  %s，%s",view.getClass().getCanonicalName(), view.getWidth(),view.getHeight(),view.getAlpha(),b,rect.toString(),location[0],location[1]));
             return false;
         }
         return view.getVisibility() == VISIBLE || (view.getVisibility() != VISIBLE && view.getAnimation() != null && view.getAnimation().getFillAfter());

@@ -55,6 +55,7 @@ class AutoPlugin extends Transform implements Plugin<Project> {
                             }
                         }
                     }
+                    // * 标识父类不做限制
                     if (hashMap.containsKey("*")) {
                         ArrayList arrayList = hashMap.get("*") as ArrayList
                         ArrayList arrayList2 = HookConfig.arrowsTarget.get("*") as ArrayList

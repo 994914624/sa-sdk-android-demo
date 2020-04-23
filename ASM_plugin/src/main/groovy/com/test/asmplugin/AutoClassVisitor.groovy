@@ -3,35 +3,31 @@ package com.test.asmplugin
 import org.gradle.model.internal.type.WildcardWrapper
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.FieldVisitor
+import org.objectweb.asm.Handle
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
+import org.objectweb.asm.Type
 import org.objectweb.asm.commons.AdviceAdapter
 
 
 class AutoClassVisitor extends ClassVisitor {
 
-    /**
-     * 类名
-     */
+    // 类名
     private String className
-
-    /**
-     * 父类名
-     */
+    // 父类名
     private String superName
-
-    /**
-     * 该类实现的接口
-     */
+    // 实现的接口
     private String[] interfaces
+    // 处理 lambda
+    private HashMap lambdaMap =["lambda":[]]
 
-    public AutoClassVisitor(ClassVisitor classVisitor) {
+    AutoClassVisitor(ClassVisitor classVisitor) {
         super(Opcodes.ASM6, classVisitor)
     }
 
     @Override
-    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+    void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces)
         this.className = name
         this.superName = superName
@@ -53,7 +49,7 @@ class AutoClassVisitor extends ClassVisitor {
      * 访问方法
      */
     @Override
-    public MethodVisitor visitMethod(int access, String name, String desc, String signature,
+     MethodVisitor visitMethod(int access, String name, String desc, String signature,
                                      String[] exceptions) {
         MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions)
         methodVisitor = new AdviceAdapter(Opcodes.ASM6, methodVisitor, access, name, desc) {
@@ -61,23 +57,61 @@ class AutoClassVisitor extends ClassVisitor {
             @Override
             protected void onMethodEnter() {
                 super.onMethodEnter()
-            }
-
-            @Override
-            protected void onMethodExit(int i) {
-                super.onMethodExit(i)
+//                if(className == "com/sensorsdata/analytics/android/sdk/SensorsDataAPI"&& name =="trackEvent"){
+//                    println "-------onMethodEnter-------"+desc
+//                }
                 // hook config 指定的方法
                 if (HookConfig.arrowsTarget.containsKey(className)) {
                     HookConfig.arrowsTarget.get(className).each {
                         matchInsert(it,name,desc,superName,interfaces,mv)
                     }
-                    return
                 }
                 // 其它
-                HookConfig.arrowsTarget.get("*").each {
-                    matchInsert(it,name,desc,superName,interfaces,mv)
+                if(HookConfig.arrowsTarget.containsKey("*")){
+                    HookConfig.arrowsTarget.get("*").each {
+                        matchInsert(it,name,desc,superName,interfaces,mv)
+                    }
                 }
+                // lambda
+                if(lambdaMap.containsKey("lambda")){
+                    lambdaMap.get("lambda").each {
+                        matchInsert(it,name,desc,superName,interfaces,mv)
+                    }
+                }
+            }
 
+            @Override
+            void visitInvokeDynamicInsn(String preName, String dynamicDesc, Handle bsm, Object... bsmArgs) {
+                super.visitInvokeDynamicInsn(preName, dynamicDesc, bsm, bsmArgs)
+                String preDesc = (String) bsmArgs[0]
+//                println "------- pre ----------------"+preName+preDesc
+                Handle afterHandle = (Handle) bsmArgs[1]
+                // 处理后的 name & desc
+//                println "------- afterHandle ----------------"+afterHandle.name +afterHandle.desc
+                if(HookConfig.arrowsTarget.containsKey("*")){
+                    ArrayList outList = HookConfig.arrowsTarget.get("*") as ArrayList
+                    outList.each {
+                        if(preName == it[0] && preDesc == it[1]){
+                            ArrayList lambdaItem = it.clone() as ArrayList
+                            // 存储处理后的 name
+                            lambdaItem[0] = afterHandle.name
+                            HashSet hashSet = lambdaMap.get("lambda") as HashSet
+                            hashSet.add(lambdaItem)
+                            lambdaMap.put("lambda",hashSet)
+                        }
+                    }
+                }
+            }
+
+            @Override
+            void visitEnd() {
+                super.visitEnd()
+
+            }
+
+            @Override
+            protected void onMethodExit(int i) {
+                super.onMethodExit(i)
             }
         }
         return methodVisitor

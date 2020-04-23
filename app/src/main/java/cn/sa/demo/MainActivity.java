@@ -18,26 +18,34 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ThemedSpinnerAdapter;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.appsflyer.AppsFlyerLib;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.Result;
-import com.growingio.android.sdk.collection.GrowingIO;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
+import com.sensorsdata.analytics.android.sdk.SensorsDataAPIProxy;
 import com.vondear.rxfeature.activity.ActivityScanerCode;
 import com.vondear.rxfeature.module.scaner.OnRxScanerListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -48,10 +56,12 @@ import cn.sa.demo.activity.ViewActivity;
 import cn.sa.demo.activity.WebViewActivity;
 import cn.sa.demo.custom.MyWebView;
 import cn.sa.demo.custom.SensorsDataUtil;
+import cn.sa.demo.data.MySQLiteOpenHelper;
 import cn.sa.demo.utils.AccessibilityUtil;
 import cn.sa.demo.utils.LuckyMoneyUtil;
 import cn.sa.demo.utils.TestHandler;
 import cn.sa.demo.utils.ToolBox;
+import cn.sa.demo.utils.hook.ClickProxy;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnRxScanerListener {
 
@@ -178,6 +188,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+//        ClickProxy.hookActivity(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         FirebaseAnalytics.getInstance(this).setCurrentScreen(this,"首页","main_xxx");
@@ -249,10 +265,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 计时开始
-        SensorsDataUtil.onPageStart("首页");
-        // 计时结束
-        SensorsDataUtil.onPageEnd("首页");
+//        // 计时开始
+//        SensorsDataUtil.onPageStart("首页");
+//        // 计时结束
+//        SensorsDataUtil.onPageEnd("首页");
+
     }
 
     /**
@@ -273,7 +290,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 //        int radom = (int) (Math.random()*1000);
 //        SensorsDataAPI.sharedInstance().identify("匿名 @:"+radom);
-        SensorsDataUtil.onPageEnd("首页");
+//        SensorsDataUtil.onPageEnd("首页");
+
     }
 
     /**
@@ -285,7 +303,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // TODO 注册成功/登录成功 时，调用 login 传入登录ID
         int radom = (int) (Math.random()*1000);
         SensorsDataAPI.sharedInstance().login("登录 @:"+radom);
-
     }
 
 
@@ -407,4 +424,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP){
+            try {
+                int x= (int) event.getRawX();
+                int y= (int) event.getRawY();
+                JSONObject jsonObject = new JSONObject();
+
+                long now = SystemClock.elapsedRealtime();
+                long interval = now - App.ADB_TIME;
+                // 此次点击 - 上次点击 > 24小时，则是首次点击
+                if(interval> 24*60*60*1000){
+                    jsonObject.put("xy",String.format("%s %s|%s",x,y,""));
+                    Log.d("adbEvent", String.format("onTouchEvent %s %s|%s", x, y,""));
+                } else {
+                    jsonObject.put("xy",String.format("%s %s|%s",x,y,interval));
+                    Log.d("adbEvent", String.format("onTouchEvent %s %s|%s", x, y,interval));
+                }
+                // 更新上次点击时间戳
+                App.ADB_TIME = now;
+//                SensorsDataAPI.sharedInstance().track("adbEvent",jsonObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
 }

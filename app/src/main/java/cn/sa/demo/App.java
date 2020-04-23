@@ -2,14 +2,23 @@ package cn.sa.demo;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabaseLockedException;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.webkit.WebView;
 
+import com.appsflyer.AppsFlyerConversionListener;
+import com.appsflyer.AppsFlyerLib;
+import com.facebook.stetho.Stetho;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.growingio.android.sdk.collection.Configuration;
 import com.growingio.android.sdk.collection.GrowingIO;
@@ -32,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cn.sa.demo.custom.FloatView;
 import cn.sa.demo.custom.MyWebView;
 import cn.sa.demo.custom.SensorsDataUtil;
 import cn.sa.demo.observer.AppActivityLifecycleCallbacks;
@@ -57,21 +67,71 @@ public class App extends Application {
         return context;
     }
 
+    public static long ADB_TIME;
+
     @Override
     public void onCreate() {
         super.onCreate();
         context = this.getApplicationContext();
         this.registerActivityLifecycleCallbacks(new AppActivityLifecycleCallbacks());
+        // RxTool 扫码等功能库
+        RxTool.init(this);
+        // chrome://inspect 查看数据库
+        Stetho.initializeWithDefaults(this);
         // 在 Application 的 onCreate 初始化 SDK
         initSensorsDataSDK();
         // 风控 SDK
         //initSensorsRiskControlAPI();
         // GIO
 //        initGIO();
-        // RxTool 扫码等功能库
-        RxTool.init(this);
         // Firebase
 //        fireBaseEvent();
+        // AppsFlyer
+//        initAppsFlyer();
+        setFullScreenView();
+
+    }
+
+    private void setFullScreenView() {
+
+    }
+
+    private void initAppsFlyer() {
+        AppsFlyerConversionListener conversionListener = new AppsFlyerConversionListener() {
+
+
+            @Override
+            public void onConversionDataSuccess(Map<String, Object> conversionData) {
+
+                for (String attrName : conversionData.keySet()) {
+                    Log.d("LOG_TAG", "attribute: " + attrName + " = " + conversionData.get(attrName));
+                }
+            }
+
+            @Override
+            public void onConversionDataFail(String errorMessage) {
+                Log.d("LOG_TAG", "error getting conversion data: " + errorMessage);
+            }
+
+            @Override
+            public void onAppOpenAttribution(Map<String, String> conversionData) {
+
+                for (String attrName : conversionData.keySet()) {
+                    Log.d("LOG_TAG", "attribute: " + attrName + " = " + conversionData.get(attrName));
+                }
+
+            }
+
+            @Override
+            public void onAttributionFailure(String errorMessage) {
+                Log.d("LOG_TAG", "error onAttributionFailure : " + errorMessage);
+            }
+        };
+
+        AppsFlyerLib.getInstance().init("qrdZGj123456789", conversionListener, getApplicationContext());
+        AppsFlyerLib.getInstance().startTracking(this);
+        AppsFlyerLib.getInstance().setDebugLog(true);
+//        AppsFlyerLib.getInstance().setMinTimeBetweenSessions();
     }
 
     /**
@@ -116,6 +176,9 @@ public class App extends Application {
                     }
                 })
         );
+        GrowingIO.getInstance().track("test");
+//        SQLiteDatabaseLockedException
+//        Pair
     }
 
     /**
@@ -152,6 +215,9 @@ public class App extends Application {
             SensorsDataAPI.sharedInstance().enableReactNativeAutoTrack();
             SensorsDataAPI.sharedInstance().trackAppCrash();
 
+
+//            WebView webView = new MyWebView(this);
+//            webView.loadUrl("http://192.168.1.64:6789");
 
             // 开启加密
 //            SensorsDataAPI.sharedInstance().enableEncrypt(true);

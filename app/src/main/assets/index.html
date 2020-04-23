@@ -48,8 +48,8 @@
     w[n].para = para;
   }
 })({
-  sdk_url: 'http://static.sensorsdata.cn/sdk/1.10.9/sensorsdata.min.js',
-  heatmap_url: 'http://static.sensorsdata.cn/sdk/1.10.9/heatmap.min.js',
+  sdk_url: 'https://cdn.jsdelivr.net/npm/sa-sdk-javascript@1.14.11/sensorsdata.min.js',
+  heatmap_url: 'https://cdn.jsdelivr.net/npm/sa-sdk-javascript@1.14.11/heatmap.min.js',
   name: 'sensors',
   // 打通 App 和 H5
   use_app_track:true,
@@ -69,7 +69,11 @@ sensors.quick('autoTrack');
 
 <script type="text/javascript">
 		document.getElementById("btn").onclick = function () {
-			alert("button");
+<!--			alert("button");-->
+				alert(window.SensorsData_APP_JS_Bridge);
+				console.log("啊啊啊 1"+SensorsData_APP_JS_Bridge);
+				console.log("啊啊啊 2"+SensorsData_APP_JS_Bridge.sensorsdata_verify);
+				console.log("啊啊啊 3"+SensorsData_APP_JS_Bridge.sensorsdata_track);
 			sensors.track("testJS",{$model:"XXX",$manufacturer:"hhh"});
 		}
 </script>

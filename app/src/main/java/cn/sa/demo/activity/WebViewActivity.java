@@ -54,8 +54,10 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
         setContentView(R.layout.activity_web_view);
         this.setTitle("打通 App 和 H5 & 注入 JS SDK");
         initInputActionBar();
-        initWebView();
+//        initWebView();
     }
+
+
 
     /**
      * 输入框
@@ -121,7 +123,7 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
      */
     private void initWebView() {
         // 允许静态页面的 cookie，accept cookies for file scheme URLs.
-        CookieManager.setAcceptFileSchemeCookies(true);
+//        CookieManager.setAcceptFileSchemeCookies(true);
 
         webView = new MyWebView(this);
         ViewGroup viewGroup = findViewById(R.id.webview);
@@ -143,7 +145,8 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
 
 //        webView.addJavascriptInterface();
         // 这里使用一个本地 html 来模拟验证 App 和 H5打通
-        WEB_URL = "file:///android_asset/h5.html";
+//        WEB_URL = "file:///android_asset/h5.html"; "http://192.168.1.64:6789"
+        WEB_URL = "file:///android_asset/index.html";
         webView.loadUrl(WEB_URL);
         int a = (int) (1000 * Math.random());
 
@@ -190,6 +193,23 @@ public class WebViewActivity extends BaseActivity implements OnRxScanerListener 
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initWebView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webView != null) {
+            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            webView.clearHistory();
+            ((ViewGroup) webView.getParent()).removeView(webView);
+            webView.destroy();
+            webView = null;
+        }
+    }
 
     @Override
     protected void onDestroy() {
